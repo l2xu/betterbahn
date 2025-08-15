@@ -1,15 +1,11 @@
 // Importiere React und Zug-Hintergrundbild
 import React from "react";
-import train from "../public/train.jpg";
 
 // Hero-Komponente für den Hauptbereich der Startseite
 const Hero = () => {
 	return (
 		<section
-			className="my-10 p-6 rounded-3xl  min-h-[200px] md:min-h-[300px]   bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center  bg-black/65 bg-blend-overlay"
-			style={{
-				backgroundImage: `url(${train.src})`,
-			}}
+			className="my-10 p-6 rounded-3xl min-h-[200px] md:min-h-[300px] bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center bg-gradient-to-r from-blue-600 to-blue-800"
 		>
 			{/* Hauptslogan mit hervorgehobenem Text */}
 			<div className="text-center text-white uppercase text-3xl md:text-4xl font-bold  tracking-wide leading-normal  ">
