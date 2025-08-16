@@ -1,0 +1,59 @@
+name: Copilot coding agent task
+description: Describe a task for the GitHub Copilot coding agent to implement
+labels: ["copilot", "automation"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What should be built or changed?
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / context
+      description: Why is this needed? Include relevant links.
+  - type: textarea
+    id: requirements
+    attributes:
+      label: Requirements (checklist)
+      description: Explicit, testable requirements. One per line with [ ] checkboxes.
+      placeholder: "- [ ] Do X\n- [ ] Do Y"
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: What must be true before we consider this done?
+  - type: textarea
+    id: testplan
+    attributes:
+      label: Test plan
+      description: How should we validate this works (local + CI)?
+  - type: dropdown
+    id: size
+    attributes:
+      label: Size
+      options:
+        - S (<= 2h)
+        - M (<= 1 day)
+        - L (> 1 day)
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints / assumptions
+      description: Any tech or product constraints the agent must follow.
+  - type: textarea
+    id: outofscope
+    attributes:
+      label: Out of scope
+      description: Call out what is not to be changed.
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks / dependencies
+      description: External dependencies, sequencing, or risks.

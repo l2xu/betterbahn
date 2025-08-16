@@ -133,7 +133,7 @@ const SearchForm = () => {
 				<div className="relative">
 					<div className="flex items-center gap-2 mb-2">
 						<label htmlFor="url" className="text-sm font-medium text-gray-700">
-							Deutsche Bahn "Verbindung Teilen Text"
+							Deutsche Bahn &quot;Verbindung Teilen Text&quot;
 						</label>
 						<button
 							type="button"
@@ -169,10 +169,10 @@ const SearchForm = () => {
 									Verbindung
 								</li>
 								<li>
-									Klicke auf <strong>"Verbindung Teilen"</strong>
+									Klicke auf <strong>&quot;Verbindung Teilen&quot;</strong>
 								</li>
 								<li>
-									Klicke auf <strong>"Infos Kopieren"</strong>
+									Klicke auf <strong>&quot;Infos Kopieren&quot;</strong>
 								</li>
 								<li>Füge den kompletten kopierten Text hier ein</li>
 							</ol>
