@@ -16,7 +16,17 @@ To run the project locally:
 
 1. Clone the repository
 2. Install dependencies with `npm install`
-3. Start the development server with `npm run dev`
+3. (Optional) Configure authentication by creating a `.env.local` file with `NEXT_PUBLIC_AUTH_PASSWORD=your_password_here`
+4. Start the development server with `npm run dev`
+
+### Authentication
+
+BetterBahn supports optional password protection:
+
+- Set `NEXT_PUBLIC_AUTH_PASSWORD` environment variable to enable authentication
+- Users will be prompted for the password on their first visit
+- Authentication is stored locally and persists across browser sessions
+- Leave the environment variable unset to disable authentication
 
 ## Docker
 

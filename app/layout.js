@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import AuthProvider from "@/components/AuthProvider";
 
 // Konfiguriere die Schriftarten
 const geistSans = Geist({
@@ -28,12 +29,14 @@ export default function RootLayout({ children }) {
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto px-2 py-6`}
 			>
-				{/* Navigation einbinden */}
-				<Navbar />
-				{/* Seiteninhalt */}
-				{children}
-				{/* Fußzeile einbinden */}
-				<Footer />
+				<AuthProvider>
+					{/* Navigation einbinden */}
+					<Navbar />
+					{/* Seiteninhalt */}
+					{children}
+					{/* Fußzeile einbinden */}
+					<Footer />
+				</AuthProvider>
 			</body>
 		</html>
 	);
