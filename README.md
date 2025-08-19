@@ -22,6 +22,28 @@ To run the project locally:
 
 You can also build and run BetterBahn as a Docker container. A `Dockerfile` is included in the repository.
 
+## Docker Compose
+
+You can run the app with docker compose:
+
+### Default
+
+`docker compose -f docker-compose/docker-compose.yaml --project-directory=./ up -d`
+
+http://localhost:3000
+
+### With traefik
+
+Create a .env file in the projects root directory
+
+```ini
+DOMAIN=example.com
+SUBDOMAIN=betterbahn
+TRAEFIK_NETWORK=rp
+```
+
+`docker compose -f docker-compose/docker-compose-traefik.yaml --project-directory=./ up -d`
+
 ## License
 
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International Public License (CC BY-NC 4.0). See the [LICENSE](./LICENSE) file for details.

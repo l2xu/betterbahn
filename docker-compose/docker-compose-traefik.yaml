@@ -1,0 +1,21 @@
+services:
+    betterbahn:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        labels:
+            traefik.enable: "true"
+            traefik.http.routers.betterbahn.tls.certresolver: "default"
+            traefik.http.routers.betterbahn.tls.domains[0].main: "${DOMAIN}"
+            traefik.http.routers.betterbahn.tls.domains[0].sans: "*.${DOMAIN}"
+            traefik.http.routers.betterbahn.rule: "Host(`${SUBDOMAIN:-betterbahn}.${DOMAIN}`)"
+            traefik.http.routers.betterbahn.entrypoints: "websecure"
+            traefik.http.services.betterbahn.loadbalancer.server.url: "http://${SUBDOMAIN:-betterbahn}.${DOMAIN}:3000"
+        networks:
+            - rp
+
+networks:
+    rp:
+        external: true
+        name: "${TRAEFIK_NETWORK:-rp}"

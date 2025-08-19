@@ -100,13 +100,13 @@ const SearchForm = () => {
 		if (updates.hasDeutschlandTicket != null) {
 			localStorage.setItem(
 				"betterbahn/settings/hasDeutschlandTicket",
-				updates.hasDeutschlandTicket,
+				updates.hasDeutschlandTicket
 			);
 		}
 		if (updates.passengerAge != null) {
 			localStorage.setItem(
 				"betterbahn/settings/passengerAge",
-				updates.passengerAge,
+				updates.passengerAge
 			);
 		}
 		setFormData((prev) => ({ ...prev, ...updates }));
@@ -144,11 +144,11 @@ const SearchForm = () => {
 	useEffect(() => {
 		console.log(localStorage.getItem("betterbahn/settings/bahnCard"));
 		const storageBahnCard = localStorage.getItem(
-			"betterbahn/settings/bahnCard",
+			"betterbahn/settings/bahnCard"
 		);
 		const storageAge = localStorage.getItem("betterbahn/settings/passengerAge");
 		const storageDTicket = localStorage.getItem(
-			"betterbahn/settings/hasDeutschlandTicket",
+			"betterbahn/settings/hasDeutschlandTicket"
 		);
 		const updates = {};
 		if (storageBahnCard != null) {
@@ -173,13 +173,13 @@ const SearchForm = () => {
 				{/* URL Input */}
 				<div className="relative">
 					<div className="flex items-center gap-2 mb-2">
-						<label htmlFor="url" className="text-sm font-medium text-gray-700">
+						<label htmlFor="url" className="text-sm font-medium opacity-80">
 							Deutsche Bahn "Verbindung Teilen Text"
 						</label>
 						<button
 							type="button"
 							onClick={() => setShowHelp(!showHelp)}
-							className="inline-flex items-center justify-center w-5 h-5 text-xs bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
+							className="inline-flex items-center justify-center w-5 h-5 text-xs bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
 							aria-label="Hilfe anzeigen"
 						>
 							?
