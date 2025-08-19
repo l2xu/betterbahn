@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import JourneyResults from "@/components/JourneyResults";
 import SplitOptions from "@/components/SplitOptions";
 import { searchForJourneys, validateJourneyData } from "@/utils/journeyUtils";
+import { isLegCoveredByDeutschlandTicket } from "@/utils/deutschlandTicketUtils";
 
 // Konstanten für Lademeldungen
 const LOADING_MESSAGES = {
@@ -62,12 +63,18 @@ const formatPrice = (price) => {
 };
 
 const formatPriceWithTwoDecimals = (price) => {
-	if (typeof price === "object") {
-		const amount = parseFloat(price.amount);
-		return `${amount.toFixed(2).replace(".", ",")}€`;
-	}
-	const amount = parseFloat(price);
-	return `${amount.toFixed(2).replace(".", ",")}€`;
+    let amount;
+    if (price && typeof price === "object") {
+        amount = parseFloat(price.amount);
+    } else {
+        amount = parseFloat(price);
+    }
+
+    if (isNaN(amount)) {
+        return null;
+    }
+
+    return `${amount.toFixed(2).replace(".", ",")}€`;
 };
 
 // --- Component: Status Box ---
@@ -152,6 +159,26 @@ function JourneyInfoRow({ children }) {
 function OriginalJourneyCard({ extractedData, selectedJourney }) {
 	if (!extractedData) return null;
 
+    const { hasDeutschlandTicket } = extractedData;
+    const trainLegs = selectedJourney.legs?.filter((leg) => !leg.walking) || [];
+    const isFullyCoveredByDticket =
+        hasDeutschlandTicket &&
+        trainLegs.length > 0 &&
+        trainLegs.every((leg) =>
+            isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket)
+        );
+
+    const formattedPrice = formatPriceWithTwoDecimals(selectedJourney.price);
+    let priceDisplay;
+
+    if (formattedPrice !== null) {
+        priceDisplay = formattedPrice;
+    } else if (isFullyCoveredByDticket) {
+        priceDisplay = "0,00€";
+    } else {
+        priceDisplay = "Preis auf Anfrage";
+    }
+
 	const renderSelectedJourney = () => (
 		<div className="border rounded-lg overflow-hidden shadow-sm bg-white border-gray-200">
 			<div className="p-4">
@@ -173,7 +200,7 @@ function OriginalJourneyCard({ extractedData, selectedJourney }) {
 							<div className="text-right">
 								<div className="font-bold text-lg text-red-600">Original</div>
 								<div className="text-xl font-bold text-gray-900">
-									{formatPriceWithTwoDecimals(selectedJourney.price)}
+                                    {priceDisplay}
 								</div>
 							</div>
 						</div>
