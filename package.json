@@ -11,15 +11,14 @@
     "deploy": "docker build"
   },
   "dependencies": {
-    "db-vendo-client": "^6.8.2",
-    "hafas-client": "^6.3.5",
+    "db-vendo-client": "^6.9.0",
     "next": "15.3.4",
-    "puppeteer": "^24.10.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "puppeteer": "^24.17.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "@tailwindcss/postcss": "^4.1.12",
+    "tailwindcss": "^4.1.12"
   }
 }
