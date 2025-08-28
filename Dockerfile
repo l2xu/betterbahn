@@ -100,4 +100,5 @@ COPY --from=builder --chown=node:node /app/node_modules/db-hafas-stations ./node
 USER node
 
 EXPOSE 3000
+ENV HOSTNAME=0.0.0.0
 CMD ["node", "server.js"]
