@@ -95,7 +95,7 @@ export const calculateSplitOptionPricing = ({
 	let adjustedSavings = splitOption.savings || 0;
 
 	if (originalJourney) {
-		// The API already returns prices with BahnCard discounts applied
+		// The API already returns prices with discount cards applied
 		const originalJourneyApiPrice = originalJourney.price?.amount || 0;
 
 		if (hasDeutschlandTicket) {
