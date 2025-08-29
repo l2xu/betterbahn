@@ -31,7 +31,7 @@ export const SearchForm = () => {
 
 		const searchParams = new URLSearchParams({
 			url: extractedUrl,
-			bahnCard: formData.bahnCard,
+			discount: formData.discount,
 			hasDeutschlandTicket: String(formData.hasDeutschlandTicket),
 			passengerAge: String(formData.passengerAge),
 			travelClass: formData.travelClass,
@@ -49,8 +49,8 @@ export const SearchForm = () => {
 				<URLInput url={url} setUrl={setUrl} />
 				<div className="flex flex-col md:flex-row gap-8">
 					<select
-						value={formData.bahnCard}
-						onChange={(e) => updateFormData({ bahnCard: e.target.value })}
+						value={formData.discount}
+						onChange={(e) => updateFormData({ discount: e.target.value })}
 						className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
 					>
 						<option value="none">Keine BahnCard</option>

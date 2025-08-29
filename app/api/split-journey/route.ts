@@ -7,6 +7,38 @@ import { z } from "zod/v4";
 import { getApiCount, incrementApiCount } from "../../../utils/apiCounter";
 import { apiErrorHandler } from "../_lib/error-handler";
 
+/**
+ * Maps BetterBahn discount values to db-vendo-client loyalty card format
+ */
+function mapDiscountToLoyaltyCard(discountType: string, travelClass: number) {
+	switch (discountType) {
+		// German BahnCards
+		case "25":
+			return { type: loyaltyCards.BAHNCARD, discount: 25, class: travelClass };
+		case "50": 
+			return { type: loyaltyCards.BAHNCARD, discount: 50, class: travelClass };
+		case "business25":
+			return { type: loyaltyCards.BAHNCARD, discount: 25, business: true, class: travelClass };
+		case "business50":
+			return { type: loyaltyCards.BAHNCARD, discount: 50, business: true, class: travelClass };
+		
+		// International discounts
+		case "ch-general":
+			return { type: loyaltyCards.GENERALABONNEMENT, class: travelClass };
+		case "ch-halbtax":
+			return { type: loyaltyCards.HALBTAXABO };
+		case "at-vorteil":
+			return { type: loyaltyCards.VORTEILSCARD };
+		case "nl-40":
+			return { type: loyaltyCards.NL_40 };
+		case "klimaticket":
+			return { type: loyaltyCards.AT_KLIMATICKET, class: travelClass };
+		
+		default:
+			return null;
+	}
+}
+
 const client = createClient(dbProfile, "mail@lukasweihrauch.de");
 
 const MIN_SINGLE_SAVINGS_FACTOR = 1; // Preis muss < original * 0.98 sein
@@ -19,7 +51,7 @@ const handler = async (request: Request) => {
 	// Übergebene Daten aus der Anfrage extrahieren
 	const {
 		originalJourney,
-		bahnCard,
+		discount,
 		hasDeutschlandTicket,
 		passengerAge,
 		travelClass,
@@ -47,16 +79,16 @@ const handler = async (request: Request) => {
 		return handleStreamingResponse(
 			originalJourney,
 			splitPoints,
-			bahnCard,
+			discount,
 			hasDeutschlandTicket,
 			passengerAge,
 			travelClass
 		);
 	}
 
-	// Baue die Abfrageoptionen basierend auf den übergebenen Parametern wie bahnCard, db-ticket usw.
+	// Baue die Abfrageoptionen basierend auf den übergebenen Parametern wie Ermäßigungen, db-ticket usw.
 	const queryOptions = buildQueryOptions({
-		bahnCard,
+		discount,
 		hasDeutschlandTicket,
 		passengerAge,
 		travelClass,
@@ -103,12 +135,12 @@ interface QueryOptions {
 
 // Helper Functions
 function buildQueryOptions({
-	bahnCard,
+	discount,
 	hasDeutschlandTicket,
 	passengerAge,
 	travelClass,
 }: {
-	bahnCard: string;
+	discount: string | string[];
 	hasDeutschlandTicket: boolean;
 	passengerAge: unknown;
 	travelClass?: string;
@@ -118,15 +150,12 @@ function buildQueryOptions({
 		stopovers: true,
 		firstClass: parseInt(travelClass || "2", 10) === 1,
 	};
-
-	const discount = parseInt(bahnCard, 10);
-
-	if (bahnCard && bahnCard !== "none" && [25, 50, 100].includes(discount)) {
-		options.loyaltyCard = {
-			type: loyaltyCards.BAHNCARD,
-			discount,
-			class: parseInt(travelClass || "2", 10),
-		};
+	if (discount && discount !== "none") {
+		const discountArray = Array.isArray(discount) ? discount : [discount];
+		const loyaltyCardConfig = mapDiscountToLoyaltyCard(discountArray[0], parseInt(travelClass || "2", 10));
+		if (loyaltyCardConfig) {
+			options.loyaltyCard = loyaltyCardConfig;
+		}
 	}
 
 	if (typeof passengerAge === "number") {
@@ -407,7 +436,7 @@ function findMatchingJourney(
 async function handleStreamingResponse(
 	originalJourney: VendoJourney,
 	splitPoints: SplitPoint[],
-	bahnCard: string,
+	discount: string | string[],
 	hasDeutschlandTicket: boolean,
 	passengerAge: string,
 	travelClass: string
@@ -419,7 +448,7 @@ async function handleStreamingResponse(
 			try {
 				// Build query options
 				const queryOptions = buildQueryOptions({
-					bahnCard,
+					discount,
 					hasDeutschlandTicket,
 					passengerAge,
 					travelClass,

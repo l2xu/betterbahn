@@ -7,7 +7,7 @@ export interface ExtractedData {
 	toStationId?: string | null;
 	date?: unknown;
 	time?: string | null;
-	bahnCard?: string;
+	discount?: string;
 	hasDeutschlandTicket?: boolean;
 	passengerAge?: string;
 	travelClass?: string;

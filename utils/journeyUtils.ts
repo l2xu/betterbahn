@@ -102,7 +102,7 @@ export const searchForJourneys = async (
 		toStationId,
 		date,
 		time,
-		bahnCard,
+		discount,
 		hasDeutschlandTicket,
 		passengerAge,
 		travelClass,
@@ -127,8 +127,8 @@ export const searchForJourneys = async (
 	});
 
 	// Add optional parameters
-	if (bahnCard && bahnCard !== "none") {
-		urlParams.append("bahnCard", bahnCard);
+	if (discount && discount !== "none") {
+		urlParams.append("discount", discount);
 	}
 
 	if (hasDeutschlandTicket) {

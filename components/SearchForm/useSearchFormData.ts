@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export interface Updates {
-	bahnCard?: string;
+	discount?: string;
 	passengerAge?: string;
 	hasDeutschlandTicket?: boolean;
 }
@@ -13,7 +13,7 @@ export interface FormState {
 	toStationId: string;
 	date: string;
 	time: string;
-	bahnCard: string;
+	discount: string;
 	hasDeutschlandTicket: boolean;
 	passengerAge: string | number;
 	travelClass: string;
@@ -26,15 +26,15 @@ const INITIAL_FORM_STATE = {
 	toStationId: "",
 	date: "",
 	time: "",
-	bahnCard: "none",
+	discount: "none",
 	hasDeutschlandTicket: true,
 	passengerAge: "",
 	travelClass: "2",
 };
 
 const loadSettingsFromLocalStorage = () => {
-	console.log(localStorage.getItem("betterbahn/settings/bahnCard"));
-	const storageBahnCard = localStorage.getItem("betterbahn/settings/bahnCard");
+	console.log(localStorage.getItem("betterbahn/settings/discount"));
+	const storageDiscount = localStorage.getItem("betterbahn/settings/discount");
 	const storageAge = localStorage.getItem("betterbahn/settings/passengerAge");
 	const storageDTicket = localStorage.getItem(
 		"betterbahn/settings/hasDeutschlandTicket"
@@ -42,8 +42,8 @@ const loadSettingsFromLocalStorage = () => {
 
 	const updates: Partial<FormState> = {};
 
-	if (storageBahnCard != null) {
-		updates.bahnCard = storageBahnCard;
+	if (storageDiscount != null) {
+		updates.discount = storageDiscount;
 	}
 
 	if (storageAge != null) {
@@ -58,8 +58,8 @@ const loadSettingsFromLocalStorage = () => {
 };
 
 const updateLocalStorage = (updates: Updates) => {
-	if (updates.bahnCard != null) {
-		localStorage.setItem("betterbahn/settings/bahnCard", updates.bahnCard);
+	if (updates.discount != null) {
+		localStorage.setItem("betterbahn/settings/discount", updates.discount);
 	}
 	if (updates.hasDeutschlandTicket != null) {
 		localStorage.setItem(

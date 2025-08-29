@@ -24,7 +24,7 @@ const handler = async (request: Request) => {
 	const to = searchParams.get("to");
 	const departure = searchParams.get("departure");
 	const results = searchParams.get("results") || "10";
-	const bahnCard = searchParams.get("bahnCard");
+	const discount = searchParams.get("discount");
 	const hasDeutschlandTicket =
 		searchParams.get("hasDeutschlandTicket") === "true";
 	const passengerAge = searchParams.get("passengerAge");
@@ -68,13 +68,13 @@ const handler = async (request: Request) => {
 		options.departure = new Date(departure);
 	}
 
-	// BahnCard-Rabattkarte hinzufügen falls angegeben
-	if (bahnCard && bahnCard !== "none") {
-		const discount = parseInt(bahnCard);
-		if ([25, 50, 100].includes(discount)) {
+	// Add discount card if specified
+	if (discount && discount !== "none") {
+		const discountValue = parseInt(discount);
+		if ([25, 50, 100].includes(discountValue)) {
 			options.loyaltyCard = {
 				type: loyaltyCards.BAHNCARD,
-				discount: discount,
+				discount: discountValue,
 				class: parseInt(travelClass), // 1 für erste Klasse, 2 für zweite Klasse
 			};
 		}
@@ -94,7 +94,7 @@ const handler = async (request: Request) => {
 
 	console.log("API options being passed to db-vendo-client:", options);
 	console.log("Travel class requested:", travelClass);
-	console.log("BahnCard with class:", options.loyaltyCard);
+	console.log("Discount card with class:", options.loyaltyCard);
 
 	// API-Zähler für Verbindungssuche erhöhen
 	incrementApiCount(
