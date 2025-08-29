@@ -145,12 +145,20 @@ export const searchForJourneys = async (
 
 	try {
 		const response = await fetch(`/api/journeys?${urlParams}`);
-		const data = await response.json();
-
+		
 		if (!response.ok) {
-			throw new Error(data.error || "Fehler beim Laden der Verbindungen");
+			let errorMessage = "Fehler beim Laden der Verbindungen";
+			try {
+				const data = await response.json();
+				errorMessage = data.error || errorMessage;
+			} catch {
+				// If JSON parsing fails, use a generic error message
+				errorMessage = `Server Error: ${response.status} ${response.statusText}`;
+			}
+			throw new Error(errorMessage);
 		}
 
+		const data = await response.json();
 		return data.journeys || [];
 	} catch (error) {
 		const typedError = error as { message: string };

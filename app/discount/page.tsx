@@ -391,7 +391,7 @@ function ErrorDisplay({ error }: { error: string }) {
 				<div>
 					<strong>Fehler:</strong> {error}
 					<p className="mt-2 text-sm">
-						Bitte versuche es erneut oder kontaktiere unseren Support.
+						Bitte versuche es erneut.
 					</p>
 				</div>
 			</div>
@@ -461,7 +461,10 @@ function Discount() {
 					for (const line of lines) {
 						if (line.startsWith("data: ")) {
 							try {
-								const data = JSON.parse(line.slice(6));
+								const jsonData = line.slice(6).trim();
+								if (!jsonData) continue; // Skip empty data lines
+								
+								const data = JSON.parse(jsonData);
 
 								if (data.type === "progress") {
 									setProgressInfo({
@@ -478,7 +481,8 @@ function Discount() {
 									throw new Error(data.error);
 								}
 							} catch (parseError) {
-								console.error("Error parsing SSE data:", parseError);
+								console.error("Error parsing SSE data:", parseError, "Line:", line);
+								// Continue processing other lines instead of failing completely
 							}
 						}
 					}
