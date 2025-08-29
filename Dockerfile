@@ -35,6 +35,7 @@ WORKDIR /app
 # Set timezone to Europe/Berlin (German timezone)
 ENV TZ=Europe/Berlin
 RUN apk add --no-cache \
+    curl \
     ca-certificates \
     font-liberation \
     alsa-lib \
@@ -86,6 +87,9 @@ COPY --from=builder /app/node_modules/db-hafas-stations ./node_modules/db-hafas-
 USER node
 
 # Expose port and add healthcheck
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost:3000 || exit 1
 
