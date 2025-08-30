@@ -34,7 +34,7 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
 # Kopiert manuell das Modul, dessen Datendateien vom 'standalone'-Modus nicht erfasst werden.
-COPY --from=builder /app/node_modules/db-hafas-stations ./node_modules/db-hafas-stations
+COPY --from=builder /app/node_modules/.pnpm/db-hafas-stations@2.0.0 ./node_modules/.pnpm/db-hafas-stations@2.0.0
 
 # Wechsel zum non-root 'node' Benutzer für erhöhte Sicherheit
 USER node
