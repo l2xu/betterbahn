@@ -28,6 +28,9 @@ ENV TZ=Europe/Berlin
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# add curl to get heathcheck to run
+RUN apk add curl
+
 
 # Kopieren des Standalone-Outputs aus der Builder-Stufe
 COPY --from=builder /app/.next/standalone ./
