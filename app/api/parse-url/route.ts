@@ -211,6 +211,10 @@ async function getResolvedUrlBrowserless(url: string) {
 		).searchParams.get("vbid")}`
 	);
 
+	if (!response.ok) {
+		throw new Error(`Failed to fetch journey data: ${response.status} ${response.statusText}`);
+	}
+
 	const json = await response.json();
 
 	const parsed = z
