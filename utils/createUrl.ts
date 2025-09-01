@@ -50,6 +50,61 @@ function createStationId(station: Station): string {
 }
 
 /**
+ * Maps BetterBahn discount values to DB website format
+ * @param discountTypes - Discount type from BetterBahn form
+ * @param travelClass - Travel class (1 or 2)
+ * @returns DB-compatible discount parameter
+ */
+function mapDiscountToDBFormat(discountTypes: string[], travelClass: number): string {
+	// Handle array of discounts (max 4)
+	const discounts = discountTypes;
+	if (discounts.length > 4) {
+		throw new Error("Maximum 4 discounts allowed simultaneously");
+	}
+	
+	const classString = travelClass === 1 ? "KLASSE_1" : "KLASSE_2";
+	
+	// DB r= parameter codes for discount types
+	const rCodeMapping: Record<string, string> = {
+		// German BahnCards
+		"25": `17:${classString}`,
+		"50": `23:${classString}`,
+		"business25": `19:${classString}`,
+		"business50": `18:${classString}`,
+		
+		// Deutschland-Ticket
+		"deutschlandticket": `16:KLASSENLOS`,
+		
+		// International discounts
+		"ch-general": `1:${classString}`,
+		"ch-halbtax": `21:KLASSENLOS`,
+		"at-vorteil": `20:KLASSENLOS`,
+		"nl-40": `22:KLASSENLOS`,
+		"klimaticket": `7:${classString}`
+	};
+	
+	const validDiscounts = discounts.filter(d => d && d !== "none" && rCodeMapping[d]);
+	if (validDiscounts.length === 0) return travelClass === 1 ? "13:0:KLASSE_1:1" : "13:0:KLASSE_2:1";
+	
+	if (validDiscounts.length === 1) {
+		// Single discount: r=13:CODE:KLASSE:1
+		const code = rCodeMapping[validDiscounts[0]];
+		if (!code) throw new Error(`Unknown discount code: ${validDiscounts[0]}`);
+		return `13:${code}:1`;
+	} else {
+		// Multiple discounts: r=13:MAIN[EXTRA1|EXTRA2|EXTRA3]:1
+		const mainCode = rCodeMapping[validDiscounts[0]];
+		if (!mainCode) throw new Error(`Unknown discount code: ${validDiscounts[0]}`);
+		const extraCodes = validDiscounts.slice(1).map(d => {
+			const code = rCodeMapping[d];
+			if (!code) throw new Error(`Unknown discount code: ${d}`);
+			return code;
+		}).join("|");
+		return `13:${mainCode}[${extraCodes}]:1`;
+	}
+}
+
+/**
  * Creates a DB search URL for a journey segment
  * @param {Object} segment - Journey segment object
  * @param {number} travelClass - Travel class (1 or 2)
@@ -57,7 +112,9 @@ function createStationId(station: Station): string {
  */
 export function createSegmentSearchUrl(
 	segment: VendoJourney,
-	travelClass: number = 2
+	travelClass: number = 2,
+	discount: string | string[] = "none",
+	hasDeutschlandTicket: boolean = false
 ): string {
 	if (!segment?.legs?.length)
 		throw new Error("Invalid segment: missing legs data");
@@ -75,51 +132,48 @@ export function createSegmentSearchUrl(
 	 * i did not find any checking logic further up the component/call stack that ensures their presence.
 	 */
 
-	const parts = [
-		"sts=true",
-		`so=${encodeURIComponent(firstLeg.origin.name)}`,
-		`zo=${encodeURIComponent(lastLeg.destination.name)}`,
-		`kl=${travelClass}`,
-		"r=13:16:KLASSENLOS:1",
-	];
-
-	const originId = addStationId(firstLeg.origin, "s", parts);
-	const destId = addStationId(lastLeg.destination, "z", parts);
-
-	parts.push("sot=ST", "zot=ST");
-
-	if (originId && firstLeg.origin.name) {
-		parts.push(`soei=${originId}`);
+	// Generate r parameter with discount codes
+	const discountCodes: string[] = [];
+	
+	if (hasDeutschlandTicket) {
+		discountCodes.push("deutschlandticket");
 	}
-
-	if (destId && lastLeg.destination.name) {
-		parts.push(`zoei=${destId}`);
+	if (discount !== "none") {
+		const discountArray = Array.isArray(discount) ? discount : [discount];
+		discountCodes.push(...discountArray);
 	}
+	
+	const rParam = discountCodes.length > 0
+		? mapDiscountToDBFormat(discountCodes, travelClass)
+		: (travelClass === 1 ? "13:0:KLASSE_1:1" : "13:0:KLASSE_2:1");
 
-	parts.push(
-		`hd=${cleanDate}`,
-		"hza=D",
-		"hz=%5B%5D",
-		"ar=false",
-		"s=false",
-		"d=false",
-		"vm=00,01,02,03,04,05,06,07,08,09",
-		"fm=false",
-		"bp=false",
-		"dlt=false",
-		"dltv=false"
-	);
+	const baseUrl = new URL("https://www.bahn.de/buchung/fahrplan/suche");
+	const params = new URLSearchParams({
+		sts: "true",
+		so: firstLeg.origin.name,
+		zo: lastLeg.destination.name,
+		kl: travelClass.toString(),
+		r: rParam,
+		hd: cleanDate,
+		hza: "D",
+		hz: "%5B%5D",
+		ar: "false",
+		s: "false",
+		d: "false",
+		vm: "00,01,02,03,04,05,06,07,08,09",
+		fm: "false",
+		bp: "false",
+		dlt: "false",
+		dltv: hasDeutschlandTicket ? "true" : "false",
+		sot: "ST",
+		zot: "ST"
+	});
 
-	return `https://www.bahn.de/buchung/fahrplan/suche#${parts.join("&")}`;
+	addStationDataToParams(firstLeg.origin, lastLeg.destination, params);
+
+	return `${baseUrl.origin}${baseUrl.pathname}#${params.toString()}`;
 }
 
-/**
- * Helper function to add station ID to URL parameters
- * @param {Object} station - Station object
- * @param {string} type - Station type ('s' for origin, 'z' for destination)
- * @param {Array} parts - URL parts array to modify
- * @returns {string|null} Station ID if found
- */
 /**
  * Known problematic station mappings - station IDs that don't match expected names
  */
@@ -130,9 +184,9 @@ const PROBLEMATIC_STATION_IDS: Record<string, string> = {
 
 /**
  * Validates if a station ID should be used based on the station name
- * @param {string} stationId - The station ID
- * @param {string} stationName - The station name
- * @returns {boolean} - Whether the station ID is safe to use
+ * @param stationId - The station ID
+ * @param stationName - The station name
+ * @returns Whether the station ID is safe to use
  */
 function shouldUseStationId(stationId: string, stationName: string) {
 	if (!stationId || !stationName) return false;
@@ -149,20 +203,44 @@ function shouldUseStationId(stationId: string, stationName: string) {
 	return true;
 }
 
-function addStationId(station: Station, type: string, parts: string[]) {
-	const stationId =
-		station.id || station.stationId || station.uicCode || station.evaId;
+/**
+ * Get station ID from various possible properties
+ * @param station - Station object
+ * @returns Station ID if found
+ */
+function getStationId(station: any): string | null {
+	return station.id || station.stationId || station.uicCode || station.evaId || null;
+}
 
-	if (stationId && shouldUseStationId(stationId, station.name)) {
+/**
+ * Helper function to add station data to URL parameters
+ * @param origin - Origin station
+ * @param destination - Destination station 
+ * @param params - URLSearchParams to modify
+ */
+function addStationDataToParams(origin: any, destination: any, params: URLSearchParams): void {
+	const originId = getStationId(origin);
+	const destId = getStationId(destination);
+
+	if (originId && shouldUseStationId(originId, origin.name)) {
 		const stationData = createStationId({
-			name: station.name,
-			id: stationId,
-			x: station.longitude || station.x,
-			y: station.latitude || station.y,
+			name: origin.name,
+			id: originId,
+			x: origin.longitude || origin.x,
+			y: origin.latitude || origin.y,
 		});
-		parts.push(`${type}oid=${stationData}`);
-		return stationId;
+		params.set("soid", stationData);
+		params.set("soei", originId);
 	}
 
-	return null;
+	if (destId && shouldUseStationId(destId, destination.name)) {
+		const stationData = createStationId({
+			name: destination.name,
+			id: destId,
+			x: destination.longitude || destination.x,
+			y: destination.latitude || destination.y,
+		});
+		params.set("zoid", stationData);
+		params.set("zoei", destId);
+	}
 }

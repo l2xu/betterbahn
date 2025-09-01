@@ -57,7 +57,7 @@ const handler = async (request: Request) => {
 		.object({ journeys: z.array(vendoJourneySchema) })
 		.parse(journeys);
 
-	let allJourneys = parsed.journeys;
+	let allJourneys = parsed.journeys || [];
 
 	console.log(`Received ${allJourneys.length} journeys from main query`);
 
