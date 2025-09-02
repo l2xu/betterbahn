@@ -2,6 +2,7 @@
 import { JourneyResults } from "@/components/JourneyResults";
 import { SplitOptions } from "@/components/SplitOptions/SplitOptions";
 import { isLegCoveredByDeutschlandTicket } from "@/utils/deutschlandTicketUtils";
+import { discountLabels } from "@/utils/discountLabels";
 import { searchForJourneys } from "@/utils/journeyUtils";
 import type { VendoJourney, VendoPrice } from "@/utils/schemas";
 import type { ExtractedData, ProgressInfo, SplitOption } from "@/utils/types";
@@ -13,6 +14,34 @@ import {
 	useState,
 	type ReactNode,
 } from "react";
+
+const formatDiscountDisplay = (
+	discount: string,
+	hasDeutschlandTicket: boolean
+) => {
+	const discounts = [];
+	if (discount !== "none") {
+		discounts.push(discountLabels[discount] || discount);
+	}
+	if (hasDeutschlandTicket) {
+		discounts.push(
+			<span className="text-green-600 whitespace-nowrap">
+				✓ Deutschland-Ticket
+			</span>
+		);
+	}
+
+	if (discounts.length === 0) {
+		return "Keine Ermäßigung";
+	}
+
+	return discounts.map((discount, index) => (
+		<span key={index}>
+			{index > 0 && ", "}
+			{discount}
+		</span>
+	));
+};
 
 // Konstanten für Lademeldungen
 const LOADING_MESSAGES = {
@@ -268,21 +297,12 @@ function OriginalJourneyCard({
 							</p>
 						</div>
 						<div>
-							<p className="text-text-secondary">BahnCard</p>
+							<p className="text-text-secondary">Ermäßigung</p>
 							<p className="text-text-primary">
-								{extractedData.bahnCard === "none"
-									? "Keine"
-									: `BahnCard ${extractedData.bahnCard}`}
+								{formatDiscountDisplay(extractedData.discount || "none", extractedData.hasDeutschlandTicket || false)}
 							</p>
 						</div>
 					</div>
-
-					{extractedData.hasDeutschlandTicket && (
-						<div className="mt-2">
-							<p className="text-text-secondary text-sm">Deutschland-Ticket</p>
-							<p className="text-green-600 font-medium">✓ Vorhanden</p>
-						</div>
-					)}
 
 					{selectedJourney.price?.hint && (
 						<div className="mt-2">
@@ -431,7 +451,7 @@ function Discount() {
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
 						originalJourney: journey,
-						bahnCard: journeyData?.bahnCard || "none",
+						discount: journeyData?.discount || "none",
 						hasDeutschlandTicket: journeyData?.hasDeutschlandTicket || false,
 						passengerAge: journeyData?.passengerAge?.trim()
 							? parseInt(journeyData.passengerAge.trim(), 10)
@@ -550,7 +570,7 @@ function Discount() {
 						journeyDetails.class?.toString() ||
 						searchParams.get("travelClass") ||
 						"2",
-					bahnCard: searchParams.get("bahnCard") || "none",
+					discount: searchParams.get("discount") || "none",
 					hasDeutschlandTicket:
 						searchParams.get("hasDeutschlandTicket") === "true",
 					passengerAge: searchParams.get("passengerAge") || "",

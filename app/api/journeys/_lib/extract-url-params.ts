@@ -6,7 +6,7 @@ export const extractUrlParams = (url: string) => {
 		to: searchParams.get("to"),
 		departure: searchParams.get("departure"),
 		results: searchParams.get("results") || "10",
-		bahnCard: searchParams.get("bahnCard"),
+		discount: searchParams.get("discount"),
 		hasDeutschlandTicket: searchParams.get("hasDeutschlandTicket") === "true",
 		passengerAge: searchParams.get("passengerAge"),
 		travelClass: searchParams.get("travelClass") || "2",

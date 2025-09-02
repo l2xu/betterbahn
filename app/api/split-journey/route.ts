@@ -19,7 +19,7 @@ const handler = async (request: Request) => {
 	// Übergebene Daten aus der Anfrage extrahieren
 	const {
 		originalJourney,
-		bahnCard,
+		discount = "none",
 		hasDeutschlandTicket,
 		passengerAge,
 		travelClass,
@@ -47,16 +47,16 @@ const handler = async (request: Request) => {
 		return handleStreamingResponse(
 			originalJourney,
 			splitPoints,
-			bahnCard,
+			discount,
 			hasDeutschlandTicket,
 			passengerAge,
 			travelClass
 		);
 	}
 
-	// Baue die Abfrageoptionen basierend auf den übergebenen Parametern wie bahnCard, db-ticket usw.
+	// Baue die Abfrageoptionen basierend auf den übergebenen Parametern wie discount, db-ticket usw.
 	const queryOptions = buildQueryOptions({
-		bahnCard,
+		discount,
 		hasDeutschlandTicket,
 		passengerAge,
 		travelClass,
@@ -103,12 +103,12 @@ interface QueryOptions {
 
 // Helper Functions
 function buildQueryOptions({
-	bahnCard,
+	discount,
 	hasDeutschlandTicket,
 	passengerAge,
 	travelClass,
 }: {
-	bahnCard: string;
+	discount: string;
 	hasDeutschlandTicket: boolean;
 	passengerAge: unknown;
 	travelClass?: string;
@@ -119,12 +119,12 @@ function buildQueryOptions({
 		firstClass: parseInt(travelClass || "2", 10) === 1,
 	};
 
-	const discount = parseInt(bahnCard, 10);
+	const discountNum = parseInt(discount, 10);
 
-	if (bahnCard && bahnCard !== "none" && [25, 50, 100].includes(discount)) {
+	if (discount !== "none" && [25, 50, 100].includes(discountNum)) {
 		options.loyaltyCard = {
 			type: loyaltyCards.BAHNCARD,
-			discount,
+			discount: discountNum,
 			class: parseInt(travelClass || "2", 10),
 		};
 	}
@@ -408,7 +408,7 @@ function findMatchingJourney(
 function handleStreamingResponse(
 	originalJourney: VendoJourney,
 	splitPoints: SplitPoint[],
-	bahnCard: string,
+	discount: string,
 	hasDeutschlandTicket: boolean,
 	passengerAge: string,
 	travelClass: string
@@ -420,7 +420,7 @@ function handleStreamingResponse(
 			try {
 				// Build query options
 				const queryOptions = buildQueryOptions({
-					bahnCard,
+					discount,
 					hasDeutschlandTicket,
 					passengerAge,
 					travelClass,

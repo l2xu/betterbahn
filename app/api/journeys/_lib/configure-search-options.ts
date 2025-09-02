@@ -19,9 +19,9 @@ export const configureSearchOptions = (urlParams: JourneyUrlParams) => {
 		options.departure = new Date(urlParams.departure);
 	}
 
-	// BahnCard-Rabattkarte hinzufügen falls angegeben
-	if (urlParams.bahnCard && urlParams.bahnCard !== "none") {
-		const discount = parseInt(urlParams.bahnCard, 10);
+	// Discount-Rabattkarte hinzufügen falls angegeben
+	if (urlParams.discount !== "none") {
+		const discount = parseInt(urlParams.discount, 10);
 		if ([25, 50, 100].includes(discount)) {
 			options.loyaltyCard = {
 				type: loyaltyCards.BAHNCARD,
@@ -42,10 +42,6 @@ export const configureSearchOptions = (urlParams: JourneyUrlParams) => {
 		// Diese Option kann helfen, genauere Preise zurückzugeben wenn Deutschland-Ticket verfügbar ist
 		options.deutschlandTicketConnectionsOnly = false; // Wir wollen alle Verbindungen, aber mit genauen Preisen
 	}
-
-	console.log("API options being passed to db-vendo-client:", options);
-	console.log("Travel class requested:", urlParams.travelClass);
-	console.log("BahnCard with class:", options.loyaltyCard);
 
 	return options;
 };
