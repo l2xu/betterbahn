@@ -5,7 +5,7 @@ interface Station {
 	stationId?: string;
 	uicCode?: string;
 	evaId?: string;
-	name: string;
+	name?: string;
 	longitude?: number;
 	latitude?: number;
 	x?: number;
@@ -66,19 +66,18 @@ export function createSegmentSearchUrl(
 	const lastLeg = legs[legs.length - 1];
 	const cleanDate = formatDate(firstLeg.departure);
 
-	// TODO diesen code zu new URL -> .searchParams.set() usw porten
+	// Modern URL building with proper validation
 
-	/**
-	 * TODO looking at the original code, the majority treats origin and destination
-	 * as optional / possibly undefined properties.
-	 * the following logic, from the original code, doesn't treat them as such, which could be an oversight.
-	 * i did not find any checking logic further up the component/call stack that ensures their presence.
-	 */
+	// Properly validate required data with explicit checks for optional properties
+	if (!firstLeg?.origin || !firstLeg.origin.name || 
+		!lastLeg?.destination || !lastLeg.destination.name) {
+		throw new Error('Missing origin, destination, or station names in journey legs');
+	}
 
 	const parts = [
 		"sts=true",
-		`so=${encodeURIComponent(firstLeg.origin.name)}`,
-		`zo=${encodeURIComponent(lastLeg.destination.name)}`,
+		`so=${encodeURIComponent(firstLeg.origin.name || '')}`,
+		`zo=${encodeURIComponent(lastLeg.destination.name || '')}`,
 		`kl=${travelClass}`,
 		"r=13:16:KLASSENLOS:1",
 	];
@@ -88,11 +87,11 @@ export function createSegmentSearchUrl(
 
 	parts.push("sot=ST", "zot=ST");
 
-	if (originId && firstLeg.origin.name) {
+	if (originId && firstLeg.origin?.name) {
 		parts.push(`soei=${originId}`);
 	}
 
-	if (destId && lastLeg.destination.name) {
+	if (destId && lastLeg.destination?.name) {
 		parts.push(`zoei=${destId}`);
 	}
 
@@ -153,7 +152,7 @@ function addStationId(station: Station, type: string, parts: string[]) {
 	const stationId =
 		station.id || station.stationId || station.uicCode || station.evaId;
 
-	if (stationId && shouldUseStationId(stationId, station.name)) {
+	if (stationId && station.name && shouldUseStationId(stationId, station.name)) {
 		const stationData = createStationId({
 			name: station.name,
 			id: stationId,
@@ -166,3 +165,4 @@ function addStationId(station: Station, type: string, parts: string[]) {
 
 	return null;
 }
+

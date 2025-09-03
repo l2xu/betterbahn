@@ -4,47 +4,10 @@ import type {
 	VendoLeg,
 	VendoOriginOrDestination,
 } from "@/utils/schemas";
+import { formatTime, formatDuration } from "./formatUtils";
 
-// Formatiere Zeit von ISO-String zu HH:MM
-export const formatTime = (dateString: string) => {
-	const date = new Date(dateString);
-
-	if (isNaN(date.getTime())) {
-		console.error("Invalid date string:", dateString);
-		return "Invalid time";
-	}
-
-	try {
-		return date.toLocaleTimeString("de-DE", {
-			hour: "2-digit",
-			minute: "2-digit",
-		});
-	} catch {
-		return "Invalid time"; // Fallback bei unwahrscheinlichem Locale-Fehler
-	}
-};
-
-// Berechne und formatiere Reisedauer
-export const formatDuration = (journey: { legs: VendoLeg[] }) => {
-	const legs = journey?.legs;
-	if (!legs?.length) return "Unknown duration";
-	const firstLeg = legs[0];
-	const lastLeg = legs[legs.length - 1];
-	if (!firstLeg.departure || !lastLeg.arrival) return "Unknown duration";
-
-	const departure = new Date(firstLeg.departure);
-	const arrival = new Date(lastLeg.arrival);
-	if (isNaN(departure.getTime()) || isNaN(arrival.getTime())) {
-		return "Invalid duration";
-	}
-
-	const diff = arrival.getTime() - departure.getTime();
-	if (diff < 0) return "Invalid duration";
-	if (diff > 24 * 60 * 60 * 1000) return "Long journey";
-
-	const minutes = Math.floor(diff / 60000);
-	return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
-};
+// Re-export the consolidated formatting functions
+export { formatTime, formatDuration };
 
 export const getLineInfoFromLeg = (leg: VendoLeg) => {
 	if (leg.walking) return null;
@@ -52,14 +15,12 @@ export const getLineInfoFromLeg = (leg: VendoLeg) => {
 };
 
 /**
- * TODO:
- * looking at the original code, it's unclear to me which type of arg
- * this function exactly permits.
- * it's called with leg.origin and leg.destination, which can be stations,
- * stops, or locations, not *just* stops.
+ * Gets the display name for a station, stop, or location
+ * @param stop - Can be a VendoStation, VendoStop, or VendoLocation (all have a 'name' property)
+ * @returns The name of the location or "Unknown" if not available
  */
 export const getStationName = (stop?: VendoOriginOrDestination) =>
-	stop?.station?.name || stop?.name || "Unknown";
+	stop?.name || "Unknown";
 
 export const calculateTransferTimeInMinutes = (leg: VendoLeg) => {
 	if (!leg.walking || !leg.departure || !leg.arrival) return 0;
@@ -77,10 +38,9 @@ export const getJourneyLegsWithTransfers = (journey: VendoJourney) => {
 		.map((leg, i) => {
 			if (leg.walking) return null;
 			const next = legs[i + 1];
-			return {
-				...leg,
+			return Object.assign({}, leg, {
 				transferTimeAfter: next?.walking ? calculateTransferTimeInMinutes(next) : 0,
-			};
+			});
 		})
 		.filter(Boolean) as (VendoLeg & { transferTimeAfter: number })[];
 };

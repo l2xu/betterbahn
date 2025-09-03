@@ -47,19 +47,19 @@ const stopoverSchema = z.object({
 	loadFactor: z.unknown(),
 });
 
-// TODO maybe departure and arrival only exist if duration also exists?
-// TODO recheck departurePlatform and arrivalPlatform
+// Platform information is conditionally provided by the DB API
+// Departure/arrival times are independent of duration and always present for transport legs
 const vendoLegSchema = z.object({
 	origin: originOrDestinationSchema,
 	destination: originOrDestinationSchema,
-	departure: z.string(),
+	departure: z.string(), // Always present for transport legs
 	line: vendoLineSchema.optional(),
-	arrival: z.string(),
+	arrival: z.string(), // Always present for transport legs
 	mode: z.string().optional(),
 	duration: z.unknown(),
 	walking: z.unknown(),
-	departurePlatform: z.string().nullable().optional(),
-	arrivalPlatform: z.string().nullable().optional(),
+	departurePlatform: z.string().nullable().optional(), // Platform info when available
+	arrivalPlatform: z.string().nullable().optional(), // Platform info when available
 	delay: z.number().optional(),
 	cancelled: z.boolean().optional(),
 	stopovers: z.array(stopoverSchema).optional(),

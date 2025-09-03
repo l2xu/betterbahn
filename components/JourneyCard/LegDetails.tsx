@@ -1,9 +1,6 @@
 import type { VendoLeg } from "@/utils/schemas";
-import {
-	formatDuration,
-	TrainIdentifier,
-	formatTime,
-} from "./journey-card-utils";
+import { formatTime } from "@/utils/formatUtils";
+import { TrainIdentifier } from "./journey-card-utils";
 import { LegDuration } from "./LegDuration";
 
 export const LegDetails = ({
@@ -17,7 +14,7 @@ export const LegDetails = ({
 		return (
 			<div className="text-xs text-foreground/70 py-1">
 				<span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
-					🚶 Walk {formatDuration(leg.duration)}
+					🚶 Walk <LegDuration leg={leg} />
 				</span>
 			</div>
 		);
