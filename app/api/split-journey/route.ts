@@ -1,4 +1,4 @@
-import { vendoJourneySchema, type VendoJourney } from "@/utils/schemas";
+import { vendoJourneySchema, validatedVendoJourneySchema, type VendoJourney } from "@/utils/schemas";
 import type { ProgressInfo, SplitPoint, TrainLine } from "@/utils/types.js";
 import { createClient } from "db-vendo-client";
 import { data as loyaltyCards } from "db-vendo-client/format/loyalty-cards";
@@ -26,9 +26,14 @@ const handler = async (request: Request) => {
 		useStreaming,
 	} = await request.json();
 
-	// Validiere, dass originalJourney vorhanden ist
-	if (!originalJourney?.legs) {
-		return Response.json({ error: "Missing originalJourney" }, { status: 400 });
+	// Validate originalJourney with schema
+	try {
+		validatedVendoJourneySchema.parse(originalJourney);
+	} catch (error) {
+		return Response.json({ 
+			error: "Invalid originalJourney: missing required station IDs or journey structure",
+			details: error instanceof z.ZodError ? error.issues : undefined
+		}, { status: 400 });
 	}
 
 	// Split-Kandidaten aus vorhandenen Legs ableiten (keine zusätzlichen API Calls)
@@ -164,7 +169,7 @@ function extractSplitPoints(journey: VendoJourney) {
 			}
 
 			if (s.arrival && s.departure && s.stop && !map.has(s.stop.id)) {
-				const trainLine: TrainLine | undefined = typeof leg.line === 'object' && leg.line ? {
+				const trainLine: TrainLine | undefined = typeof leg.line === 'object' ? {
 					name: leg.line.name,
 					product: leg.line.product || leg.line.productName,
 				} : undefined;
@@ -302,19 +307,16 @@ async function analyzeSingleSplit(
 			`${splitPoint.station?.name} → ${destination?.name}`
 		);
 
-		// Validate origin and destination exist
-		if (!origin?.id || !destination?.id) {
-			throw new Error('Missing origin or destination station ID');
-		}
+		// Schema validation at entry point ensures origin/destination IDs exist
 
 		// Make both API calls in parallel using Promise.all
 		const [firstSegmentUntyped, secondSegmentUntyped] = await Promise.all([
-			client.journeys(origin.id, splitPoint.station.id, {
+			client.journeys(origin!.id, splitPoint.station.id, {
 				...queryOptions,
 				departure: originalDeparture,
 			}),
 
-			client.journeys(splitPoint.station.id, destination.id, {
+			client.journeys(splitPoint.station.id, destination!.id, {
 				...queryOptions,
 				departure: splitDeparture,
 			}),

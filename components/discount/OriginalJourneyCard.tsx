@@ -25,7 +25,7 @@ export function OriginalJourneyCard({
 			isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket)
 		);
 
-	const formattedPrice = formatPriceWithTwoDecimals(selectedJourney.price || 0);
+	const formattedPrice = formatPriceWithTwoDecimals(selectedJourney.price);
 	let priceDisplay;
 
 	if (formattedPrice !== null) {
@@ -64,7 +64,7 @@ export function OriginalJourneyCard({
 
 						{/* Journey details */}
 						<JourneyInfoRow>
-							<span>{formatDuration(selectedJourney)}</span>
+							<span>{formatDuration(selectedJourney) || "Duration unknown"}</span>
 							<span className="">·</span>
 							<span>
 								{getChangesCount(selectedJourney)} Zwischenstopp

@@ -5,11 +5,11 @@ import {
 	isLegCoveredByDeutschlandTicket,
 } from "@/utils/deutschlandTicketUtils";
 import {
-	formatTime,
 	getJourneyLegsWithTransfers,
 	getLineInfoFromLeg,
 	getStationName,
 } from "@/utils/journeyUtils";
+import { formatTime } from "@/utils/formatUtils";
 import { formatPriceDE } from "@/utils/priceUtils";
 
 export const Segment = ({
@@ -71,7 +71,7 @@ export const Segment = ({
 						</span>
 					) : (
 						<span>
-							{segment.price?.amount !== null && segment.price?.amount !== undefined
+							{segment.price?.amount !== undefined
 								? formatPriceDE(segment.price.amount)
 								: "Price on request"}
 						</span>

@@ -4,10 +4,6 @@ import type {
 	VendoLeg,
 	VendoOriginOrDestination,
 } from "@/utils/schemas";
-import { formatTime, formatDuration } from "./formatUtils";
-
-// Re-export the consolidated formatting functions
-export { formatTime, formatDuration };
 
 export const getLineInfoFromLeg = (leg: VendoLeg) => {
 	if (leg.walking) return null;

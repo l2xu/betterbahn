@@ -15,7 +15,7 @@ export const formatTime = (dateTime?: string) => {
  * Formatiert Reisedauer basierend auf Legs
  */
 export const formatDuration = (journey: VendoJourney) => {
-	if (!journey?.legs || journey.legs.length === 0) return "";
+	if (!journey?.legs || journey.legs.length === 0) return null;
 	const departure = new Date(journey.legs[0].departure);
 	const arrival = new Date(journey.legs[journey.legs.length - 1].arrival);
 	const durationMs = arrival.getTime() - departure.getTime();
@@ -35,7 +35,11 @@ export const getChangesCount = (journey: VendoJourney) => {
 /**
  * Formatiert Preis mit zwei Dezimalstellen und deutschen Komma
  */
-export const formatPriceWithTwoDecimals = (price: VendoPrice | number) => {
+export const formatPriceWithTwoDecimals = (price?: VendoPrice | number) => {
+	if (!price && price !== 0) {
+		return null;
+	}
+
 	let amount;
 
 	if (price && typeof price === "object") {

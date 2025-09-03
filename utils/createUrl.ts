@@ -76,8 +76,8 @@ export function createSegmentSearchUrl(
 
 	const parts = [
 		"sts=true",
-		`so=${encodeURIComponent(firstLeg.origin.name || '')}`,
-		`zo=${encodeURIComponent(lastLeg.destination.name || '')}`,
+		`so=${encodeURIComponent(firstLeg.origin.name)}`,
+		`zo=${encodeURIComponent(lastLeg.destination.name)}`,
 		`kl=${travelClass}`,
 		"r=13:16:KLASSENLOS:1",
 	];
@@ -87,11 +87,11 @@ export function createSegmentSearchUrl(
 
 	parts.push("sot=ST", "zot=ST");
 
-	if (originId && firstLeg.origin?.name) {
+	if (originId && firstLeg.origin.name) {
 		parts.push(`soei=${originId}`);
 	}
 
-	if (destId && lastLeg.destination?.name) {
+	if (destId && lastLeg.destination.name) {
 		parts.push(`zoei=${destId}`);
 	}
 

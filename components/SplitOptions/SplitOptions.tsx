@@ -3,11 +3,8 @@
 import type { VendoJourney } from "@/utils/schemas";
 import type { SplitOption } from "@/utils/types";
 import { useState } from "react";
-import {
-	formatDuration,
-	formatTime,
-	getStationName,
-} from "@/utils/journeyUtils";
+import { getStationName } from "@/utils/journeyUtils";
+import { formatDuration, formatTime } from "@/utils/formatUtils";
 
 import { formatPriceDE } from "@/utils/priceUtils";
 import { getOptionsToShow } from "./getOptionsToShow";
@@ -167,7 +164,7 @@ export const SplitOptions = ({
 
 										<div className="text-sm text-foreground/60 my-2 pl-1 flex items-center">
 											<span>
-												{formatDuration({ legs: [departureLeg, arrivalLeg] })}
+												{formatDuration({ legs: [departureLeg, arrivalLeg] }) || "Duration unknown"}
 											</span>
 											<span className="mx-2">·</span>
 											<span>

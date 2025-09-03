@@ -2,7 +2,7 @@ export const apiErrorHandler = async (routeHandler: () => Promise<Response>) => 
 	try {
 		return await routeHandler();
 	} catch (error) {
-		console.error('API Error:', error);
+		console.error('API Error:', JSON.stringify(error));
 		
 		if (typeof error === "object" && error !== null && "message" in error) {
 			return Response.json({
