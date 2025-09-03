@@ -16,8 +16,11 @@ const handler = async (request: Request) => {
 		);
 	}
 
+	// Get client's cookies from the incoming request
+	const clientCookies = request.headers.get('cookie') || '';
+
 	const journeyDetails = extractJourneyDetails(
-		await getResolvedUrlBrowserless(url)
+		await getResolvedUrlBrowserless(url, clientCookies)
 	);
 
 	if ("error" in journeyDetails) {
@@ -151,7 +154,7 @@ function displayJourneyInfo(journeyDetails: ExtractedData) {
 	console.log(formatInfo);
 }
 
-async function getResolvedUrlBrowserless(url: string) {
+async function getResolvedUrlBrowserless(url: string, clientCookies: string = '') {
 	const vbid = new URL(url).searchParams.get("vbid");
 
 	if (!vbid) {
@@ -163,8 +166,20 @@ async function getResolvedUrlBrowserless(url: string) {
 		schema: vbidSchema,
 	});
 
-	const cookies = vbidRequest.response.headers.getSetCookie();
-	const { data } = await parseHinfahrtReconWithAPI(vbidRequest.data, cookies);
+	// Get cookies from the vbidRequest response
+	const responseCookies = vbidRequest.response.headers.getSetCookie()
+		.map(cookie => cookie.split(';')[0]) // Take only the name=value part
+		.filter(cookie => cookie.trim());
+
+	const allCookies = [];
+	if (clientCookies) {
+		allCookies.push(clientCookies);
+	}
+	allCookies.push(...responseCookies);
+
+	console.log("Final cookie header:", allCookies.join('; '));
+
+	const { data } = await parseHinfahrtReconWithAPI(vbidRequest.data, allCookies)
 
 	const newUrl = new URL("https://www.bahn.de/buchung/fahrplan/suche");
 
