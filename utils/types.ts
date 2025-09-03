@@ -36,6 +36,10 @@ export interface TrainLine {
 
 export interface SplitPoint {
 	departure: string;
+	arrival: string;
 	station: VendoStation;
 	trainLine?: TrainLine;
+	loadFactor?: unknown;
+	legIndex: number;
+	stopIndex: number;
 }

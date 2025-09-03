@@ -58,7 +58,7 @@ const loadSettingsFromLocalStorage = () => {
 		updates.hasDeutschlandTicket = storageDTicket === "true";
 	}
 
-	if (storageTravelClass != null) {
+	if (storageTravelClass !== null) {
 		updates.travelClass = storageTravelClass;
 	}
 
@@ -78,10 +78,10 @@ const updateLocalStorage = (updates: Updates) => {
 	if (updates.passengerAge !== null) {
 		localStorage.setItem(
 			"betterbahn/settings/passengerAge",
-			updates.passengerAge
+			String(updates.passengerAge || '')
 		);
 	}
-	if(updates.travelClass != null) {
+	if(updates.travelClass !== null && updates.travelClass !== undefined) {
 		localStorage.setItem(
 			"betterbahn/settings/travelClass",
 			updates.travelClass

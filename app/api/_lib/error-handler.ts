@@ -1,17 +1,17 @@
-export const apiErrorHandler = (routeHandler: () => Promise<Response>) => {
+export const apiErrorHandler = async (routeHandler: () => Promise<Response>) => {
 	try {
-		return routeHandler();
+		return await routeHandler();
 	} catch (error) {
+		console.error('API Error:', error);
+		
 		if (typeof error === "object" && error !== null && "message" in error) {
 			return Response.json({
-				status: 500,
-				error: error.message,
-			});
+				error: (error as Error).message,
+			}, { status: 500 });
 		}
 
 		return Response.json({
-			status: 500,
-			error: JSON.stringify(error)
-		})
+			error: "Internal server error",
+		}, { status: 500 });
 	}
 };

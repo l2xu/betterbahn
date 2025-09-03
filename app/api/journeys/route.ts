@@ -200,6 +200,6 @@ const handler = async (request: Request) => {
 	});
 };
 
-export function GET(request: Request) {
-	return apiErrorHandler(() => handler(request));
+export async function GET(request: Request) {
+	return await apiErrorHandler(() => handler(request));
 }
