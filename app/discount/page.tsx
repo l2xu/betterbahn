@@ -5,13 +5,13 @@ import { ErrorDisplay } from "@/components/discount/ErrorDisplay";
 
 // Lazy load heavy components that are not immediately visible
 const JourneyResults = dynamic(() => import("@/components/JourneyResults").then(mod => ({ default: mod.JourneyResults })), {
-	loading: () => <div className="animate-pulse bg-gray-200 h-32 rounded-lg"></div>
+	loading: () => <div className="animate-pulse bg-accent h-32 rounded-lg"></div>
 });
 const OriginalJourneyCard = dynamic(() => import("@/components/discount/OriginalJourneyCard").then(mod => ({ default: mod.OriginalJourneyCard })), {
-	loading: () => <div className="animate-pulse bg-gray-200 h-48 rounded-lg"></div>
+	loading: () => <div className="animate-pulse bg-accent h-48 rounded-lg"></div>
 });
 const SplitOptionsCard = dynamic(() => import("@/components/discount/SplitOptionsCard").then(mod => ({ default: mod.SplitOptionsCard })), {
-	loading: () => <div className="animate-pulse bg-gray-200 h-64 rounded-lg"></div>
+	loading: () => <div className="animate-pulse bg-accent h-64 rounded-lg"></div>
 });
 import { useDiscountAnalysis } from "@/components/discount/useDiscountAnalysis";
 import { LOADING_MESSAGES, STATUS } from "@/components/discount/constants";

@@ -18,7 +18,7 @@ export const Hero = () => {
 			{/* Hauptslogan mit hervorgehobenem Text */}
 			<div className="text-center text-white uppercase text-3xl md:text-4xl font-bold  tracking-wide leading-normal  ">
 				Gleicher Zug, Gleiche Zeit,{" "}
-				<span className="font-bold text-primary border-white bg-white px-2 py-1 ">
+				<span className="font-bold text-black border-white bg-white px-2 py-1 ">
 					Besserer Preis
 				</span>
 			</div>

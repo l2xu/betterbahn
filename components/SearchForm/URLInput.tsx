@@ -19,7 +19,7 @@ export const URLInput = ({
 				<button
 					type="button"
 					onClick={() => setShowHelp(!showHelp)}
-					className="inline-flex items-center justify-center w-5 h-5 text-xs bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+					className="inline-flex items-center justify-center w-5 h-5 text-xs bg-accent text-muted-foreground rounded-full hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
 					aria-label="Hilfe anzeigen"
 				>
 					?

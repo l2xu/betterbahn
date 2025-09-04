@@ -73,14 +73,14 @@ export const SearchForm = () => {
 						<legend className="sr-only">Reiseeinstellungen</legend>
 						<div className="flex flex-col md:flex-row gap-8">
 						<div className="w-full">
-							<label htmlFor="bahncard-select" className="block text-sm font-medium text-gray-700 mb-1">
+							<label htmlFor="bahncard-select" className="block text-sm font-medium text-muted-foreground mb-1">
 								BahnCard
 							</label>
 							<select
 								id="bahncard-select"
 								value={formData.bahnCard}
 								onChange={(e) => updateFormData({ bahnCard: e.target.value })}
-								className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
+								className="w-full px-3 py-2 resize-vertical border-b-2 border-border bg-input focus:ring-2 focus:ring-primary"
 								aria-describedby="bahncard-help"
 							>
 								<option value="none">Keine BahnCard</option>
@@ -90,7 +90,7 @@ export const SearchForm = () => {
 							<span id="bahncard-help" className="sr-only">Wählen Sie Ihren BahnCard-Typ aus</span>
 						</div>
 						<div className="w-full">
-							<label htmlFor="passenger-age" className="block text-sm font-medium text-gray-700 mb-1">
+							<label htmlFor="passenger-age" className="block text-sm font-medium text-muted-foreground mb-1">
 								Alter des Reisenden
 							</label>
 							<input
@@ -101,13 +101,13 @@ export const SearchForm = () => {
 								placeholder="Alter des Reisenden"
 								min="0"
 								max="120"
-								className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
+								className="w-full px-3 py-2 resize-vertical border-b-2 border-border bg-input focus:ring-2 focus:ring-primary"
 								aria-describedby="age-help"
 							/>
 							<span id="age-help" className="sr-only">Geben Sie das Alter des Reisenden ein</span>
 						</div>
 						<div className="w-full">
-							<label htmlFor="deutschlandticket-select" className="block text-sm font-medium text-gray-700 mb-1">
+							<label htmlFor="deutschlandticket-select" className="block text-sm font-medium text-muted-foreground mb-1">
 								Deutschlandticket
 							</label>
 							<select
@@ -118,7 +118,7 @@ export const SearchForm = () => {
 										hasDeutschlandTicket: e.target.value === "true",
 									})
 								}
-								className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
+								className="w-full px-3 py-2 resize-vertical border-b-2 border-border bg-input focus:ring-2 focus:ring-primary"
 								aria-describedby="deutschlandticket-help"
 							>
 								<option value="true">Deutschlandticket</option>
@@ -127,7 +127,7 @@ export const SearchForm = () => {
 							<span id="deutschlandticket-help" className="sr-only">Geben Sie an, ob Sie ein Deutschlandticket besitzen</span>
 						</div>
 						<div className="w-full">
-							<label htmlFor="travel-class-select" className="block text-sm font-medium text-gray-700 mb-1">
+							<label htmlFor="travel-class-select" className="block text-sm font-medium text-muted-foreground mb-1">
 								Reiseklasse
 							</label>
 							<select
@@ -138,7 +138,7 @@ export const SearchForm = () => {
 										travelClass: e.target.value,
 									})
 								}
-								className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
+								className="w-full px-3 py-2 resize-vertical border-b-2 border-border bg-input focus:ring-2 focus:ring-primary"
 								aria-describedby="travel-class-help"
 							>
 								<option value="1">Erste Klasse</option>
@@ -168,7 +168,7 @@ export const SearchForm = () => {
 							disabled={!url.trim()}
 							aria-describedby="form-description"
 							aria-disabled={!url.trim()}
-							className="w-full bg-primary text-white py-3 px-4 rounded-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg font-semibold"
+							className="w-full bg-primary text-white py-3 px-4 rounded-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:bg-primary-disabled disabled:text-primary-disabled-text disabled:cursor-not-allowed transition-colors text-lg font-semibold"
 						>
 							Bessere Verbindung suchen
 						</button>

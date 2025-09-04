@@ -25,7 +25,7 @@ export const Navbar = () => {
 				{/* Mobile Menü Button */}
 				<button
 					onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-					className="md:hidden p-2 rounded-md text-primary hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+					className="md:hidden p-2 rounded-md text-primary hover:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
 					aria-expanded={isMobileMenuOpen}
 					aria-controls="mobile-menu"
 					aria-label="Navigationsmenü"
@@ -83,7 +83,7 @@ export const Navbar = () => {
 						<div className="flex justify-end mb-6">
 							<button
 								onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-								className="p-2 rounded-md text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+								className="p-2 rounded-md text-muted hover:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
 								aria-label="Menü schließen"
 							>
 								<svg
