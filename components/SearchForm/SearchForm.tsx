@@ -69,50 +69,85 @@ export const SearchForm = () => {
 			<form onSubmit={handleUrlParsingAndNavigation}>
 				<div className="space-y-6">
 					<URLInput url={url} setUrl={setUrl} />
-					<div className="flex flex-col md:flex-row gap-8">
-						<select
-							value={formData.bahnCard}
-							onChange={(e) => updateFormData({ bahnCard: e.target.value })}
-							className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
-						>
-							<option value="none">Keine BahnCard</option>
-							<option value="25">BahnCard 25 </option>
-							<option value="50">BahnCard 50 </option>
-						</select>
-						<input
-							type="number"
-							value={formData.passengerAge}
-							onChange={(e) => updateFormData({ passengerAge: e.target.value })}
-							placeholder="Alter des Reisenden"
-							min="0"
-							max="120"
-							className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
-						/>
-						<select
-							value={String(formData.hasDeutschlandTicket)}
-							onChange={(e) =>
-								updateFormData({
-									hasDeutschlandTicket: e.target.value === "true",
-								})
-							}
-							className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
-						>
-							<option value="true">Deutschlandticket</option>
-							<option value="false">Kein Deutschlandticket</option>
-						</select>
-						<select
-							value={String(formData.travelClass)}
-							onChange={(e) =>
-								updateFormData({
-									travelClass: e.target.value,
-								})
-							}
-							className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
-						>
-							<option value="1">Erste Klasse</option>
-							<option value="2">Zweite Klasse</option>
-						</select>
+					<fieldset className="border-0 p-0 m-0">
+						<legend className="sr-only">Reiseeinstellungen</legend>
+						<div className="flex flex-col md:flex-row gap-8">
+						<div className="w-full">
+							<label htmlFor="bahncard-select" className="block text-sm font-medium text-gray-700 mb-1">
+								BahnCard
+							</label>
+							<select
+								id="bahncard-select"
+								value={formData.bahnCard}
+								onChange={(e) => updateFormData({ bahnCard: e.target.value })}
+								className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
+								aria-describedby="bahncard-help"
+							>
+								<option value="none">Keine BahnCard</option>
+								<option value="25">BahnCard 25</option>
+								<option value="50">BahnCard 50</option>
+							</select>
+							<span id="bahncard-help" className="sr-only">Wählen Sie Ihren BahnCard-Typ aus</span>
+						</div>
+						<div className="w-full">
+							<label htmlFor="passenger-age" className="block text-sm font-medium text-gray-700 mb-1">
+								Alter des Reisenden
+							</label>
+							<input
+								id="passenger-age"
+								type="number"
+								value={formData.passengerAge}
+								onChange={(e) => updateFormData({ passengerAge: e.target.value })}
+								placeholder="Alter des Reisenden"
+								min="0"
+								max="120"
+								className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
+								aria-describedby="age-help"
+							/>
+							<span id="age-help" className="sr-only">Geben Sie das Alter des Reisenden ein</span>
+						</div>
+						<div className="w-full">
+							<label htmlFor="deutschlandticket-select" className="block text-sm font-medium text-gray-700 mb-1">
+								Deutschlandticket
+							</label>
+							<select
+								id="deutschlandticket-select"
+								value={String(formData.hasDeutschlandTicket)}
+								onChange={(e) =>
+									updateFormData({
+										hasDeutschlandTicket: e.target.value === "true",
+									})
+								}
+								className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
+								aria-describedby="deutschlandticket-help"
+							>
+								<option value="true">Deutschlandticket</option>
+								<option value="false">Kein Deutschlandticket</option>
+							</select>
+							<span id="deutschlandticket-help" className="sr-only">Geben Sie an, ob Sie ein Deutschlandticket besitzen</span>
+						</div>
+						<div className="w-full">
+							<label htmlFor="travel-class-select" className="block text-sm font-medium text-gray-700 mb-1">
+								Reiseklasse
+							</label>
+							<select
+								id="travel-class-select"
+								value={String(formData.travelClass)}
+								onChange={(e) =>
+									updateFormData({
+										travelClass: e.target.value,
+									})
+								}
+								className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
+								aria-describedby="travel-class-help"
+							>
+								<option value="1">Erste Klasse</option>
+								<option value="2">Zweite Klasse</option>
+							</select>
+							<span id="travel-class-help" className="sr-only">Wählen Sie Ihre bevorzugte Reiseklasse</span>
+						</div>
 					</div>
+					</fieldset>
 
 					{targetUrl ? (
 						<a
@@ -121,6 +156,8 @@ export const SearchForm = () => {
 								e.preventDefault();
 								handleUrlParsingAndNavigation(e);
 							}}
+							role="button"
+							aria-describedby="form-description"
 							className="w-full bg-primary text-white py-3 px-4 rounded-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors text-lg font-semibold inline-block text-center no-underline"
 						>
 							Bessere Verbindung suchen
@@ -129,15 +166,25 @@ export const SearchForm = () => {
 						<button
 							type="submit"
 							disabled={!url.trim()}
+							aria-describedby="form-description"
+							aria-disabled={!url.trim()}
 							className="w-full bg-primary text-white py-3 px-4 rounded-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg font-semibold"
 						>
 							Bessere Verbindung suchen
 						</button>
 					)}
+					<span id="form-description" className="sr-only">
+						Sucht nach günstigeren Split-Ticket Optionen für Ihre DB-Verbindung
+					</span>
 				</div>
 
 				{urlParseError && (
-					<div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+					<div 
+						className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded"
+						role="alert"
+						aria-live="polite"
+						id="url-error-message"
+					>
 						<strong>Fehler:</strong> {urlParseError}
 					</div>
 				)}
