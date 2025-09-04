@@ -10,7 +10,7 @@ export const Navbar = () => {
 			<nav
 				className="flex justify-between items-center uppercase"
 				role="navigation"
-				aria-label="Main navigation"
+				aria-label="Hauptnavigation"
 			>
 				{/* Logo/Markenname */}
 				<div className="text-xs sm:text-lg md:text-xl">
@@ -28,10 +28,10 @@ export const Navbar = () => {
 					className="md:hidden p-2 rounded-md text-primary hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
 					aria-expanded={isMobileMenuOpen}
 					aria-controls="mobile-menu"
-					aria-label="Navigation menu"
+					aria-label="Navigationsmenü"
 				>
 					<span className="sr-only">
-						{isMobileMenuOpen ? "Close menu" : "Open menu"}
+						{isMobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
 					</span>
 					{/* Hamburger Icon */}
 					<svg
@@ -84,7 +84,7 @@ export const Navbar = () => {
 							<button
 								onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
 								className="p-2 rounded-md text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-								aria-label="Close menu"
+								aria-label="Menü schließen"
 							>
 								<svg
 									className="h-6 w-6"
