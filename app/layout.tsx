@@ -34,10 +34,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="de">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto px-2 py-6`}
+				className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto px-2 py-6 min-h-screen flex flex-col`}
 			>
 				<Navbar />
-				<main>
+				<main className="flex-1">
 					{children}
 				</main>
 				<Footer />

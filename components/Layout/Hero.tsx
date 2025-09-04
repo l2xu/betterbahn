@@ -4,7 +4,7 @@ import train from "../../public/train.jpg";
 
 export const Hero = () => {
 	return (
-		<section className="my-10 p-6 rounded-3xl min-h-[200px] md:min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
+		<section className="my-8 p-6 rounded-3xl min-h-[200px] md:min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
 			<Image
 				src={train}
 				alt="Zug auf Schienen - Deutsche Bahn"

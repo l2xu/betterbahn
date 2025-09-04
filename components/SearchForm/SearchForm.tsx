@@ -67,11 +67,11 @@ export const SearchForm = () => {
 		<section>
 			{/* Unified Input and Search Section */}
 			<form onSubmit={handleUrlParsingAndNavigation}>
-				<div className="space-y-6">
+				<div className="space-y-8">
 					<URLInput url={url} setUrl={setUrl} />
 					<fieldset className="border-0 p-0 m-0">
 						<legend className="sr-only">Reiseeinstellungen</legend>
-						<div className="flex flex-col md:flex-row gap-8">
+						<div className="flex flex-col md:flex-row gap-6">
 						<div className="w-full">
 							<label htmlFor="bahncard-select" className="block text-sm font-medium text-muted-foreground mb-1">
 								BahnCard
@@ -80,7 +80,7 @@ export const SearchForm = () => {
 								id="bahncard-select"
 								value={formData.bahnCard}
 								onChange={(e) => updateFormData({ bahnCard: e.target.value })}
-								className="w-full px-3 py-2 resize-vertical border-b-2 border-border bg-input focus:ring-2 focus:ring-primary"
+								className="w-full px-4 py-3 rounded-lg border border-border bg-input focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-base appearance-none bg-[length:12px_12px] bg-[position:right_12px_center] bg-no-repeat bg-[image:url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMUw2IDZMMTEgMSIgc3Ryb2tlPSIjNmI3MjgwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')]"
 								aria-describedby="bahncard-help"
 							>
 								<option value="none">Keine BahnCard</option>
@@ -101,7 +101,7 @@ export const SearchForm = () => {
 								placeholder="Alter des Reisenden"
 								min="0"
 								max="120"
-								className="w-full px-3 py-2 resize-vertical border-b-2 border-border bg-input focus:ring-2 focus:ring-primary"
+								className="w-full px-4 py-3 rounded-lg border border-border bg-input focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-base"
 								aria-describedby="age-help"
 							/>
 							<span id="age-help" className="sr-only">Geben Sie das Alter des Reisenden ein</span>
@@ -118,7 +118,7 @@ export const SearchForm = () => {
 										hasDeutschlandTicket: e.target.value === "true",
 									})
 								}
-								className="w-full px-3 py-2 resize-vertical border-b-2 border-border bg-input focus:ring-2 focus:ring-primary"
+								className="w-full px-4 py-3 rounded-lg border border-border bg-input focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-base appearance-none bg-[length:12px_12px] bg-[position:right_12px_center] bg-no-repeat bg-[image:url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMUw2IDZMMTEgMSIgc3Ryb2tlPSIjNmI3MjgwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')]"
 								aria-describedby="deutschlandticket-help"
 							>
 								<option value="true">Deutschlandticket</option>
@@ -138,7 +138,7 @@ export const SearchForm = () => {
 										travelClass: e.target.value,
 									})
 								}
-								className="w-full px-3 py-2 resize-vertical border-b-2 border-border bg-input focus:ring-2 focus:ring-primary"
+								className="w-full px-4 py-3 rounded-lg border border-border bg-input focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-base appearance-none bg-[length:12px_12px] bg-[position:right_12px_center] bg-no-repeat bg-[image:url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMUw2IDZMMTEgMSIgc3Ryb2tlPSIjNmI3MjgwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')]"
 								aria-describedby="travel-class-help"
 							>
 								<option value="1">Erste Klasse</option>
@@ -149,6 +149,7 @@ export const SearchForm = () => {
 					</div>
 					</fieldset>
 
+					<div className="pt-4">
 					{targetUrl ? (
 						<a
 							href={targetUrl}
@@ -176,6 +177,7 @@ export const SearchForm = () => {
 					<span id="form-description" className="sr-only">
 						Sucht nach günstigeren Split-Ticket Optionen für Ihre DB-Verbindung
 					</span>
+					</div>
 				</div>
 
 				{urlParseError && (
