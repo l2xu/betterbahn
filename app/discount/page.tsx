@@ -12,6 +12,7 @@ import type { VendoJourney } from "@/utils/schemas";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import { z } from "zod/v4";
+import { ProjectError } from "@/utils/projectError";
 
 function Discount() {
 	const searchParams = useSearchParams();
@@ -104,9 +105,17 @@ function Discount() {
 					setStatus(STATUS.DONE);
 				}
 			} catch (err) {
-				const typedErr = err as { message: string };
-				setError(typedErr.message);
-				setStatus(STATUS.ERROR);
+				if (err instanceof ProjectError) {
+					setError(err);
+				} else {
+					const typedErr = err as { message?: string };
+					setError(
+						new ProjectError({
+							name: "UNKNOWN_ERROR",
+							message: typedErr.message || "Fehler bei der initializeFlow.",
+						})
+					);
+				}
 			}
 		};
 
@@ -115,7 +124,6 @@ function Discount() {
 
 	// Computed values
 	const getStatusMessage = () => {
-		if (status === STATUS.ERROR) return `Fehler: ${error}`;
 		if (status === STATUS.DONE) return "Analyse abgeschlossen";
 		return loadingMessage;
 	};
@@ -124,7 +132,7 @@ function Discount() {
 
 	// Render helpers
 	const renderContent = () => {
-		if (status === STATUS.ERROR) {
+		if (error) {
 			return (
 				<div className="w-full">
 					<ErrorDisplay error={error} />
@@ -175,9 +183,10 @@ function Discount() {
 	return (
 		<section className="mt-16 w-full max-w-7xl mx-auto ">
 			<StatusBox
-				message={getStatusMessage()}
+				statusMessage={getStatusMessage()}
 				isLoading={isLoading}
 				progressInfo={progressInfo ?? undefined}
+				error={error}
 			/>
 			{renderContent()}
 		</section>
