@@ -35,6 +35,17 @@ export const Segment = ({
 			isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket)
 		);
 
+	// Generate booking URL during render with error handling
+	let bookingUrl: string | null = null;
+	try {
+		const dbUrl = createSegmentSearchUrl(segment, 2);
+		if (dbUrl && !dbUrl.startsWith("Error:")) {
+			bookingUrl = dbUrl;
+		}
+	} catch (error) {
+		console.error("Failed to generate booking URL:", error);
+	}
+
 	return (
 		<div className="flex justify-between items-center p-2 rounded-md bg-background border border-foreground/20">
 			<div className="flex-grow">
@@ -63,9 +74,8 @@ export const Segment = ({
 						</span>
 					) : hasUnknownPrice ? (
 						<span
-							className={`text-xs font-medium ${
-								segmentHasFlixTrain ? "text-purple-600" : "text-orange-600"
-							}`}
+							className={`text-xs font-medium ${segmentHasFlixTrain ? "text-purple-600" : "text-orange-600"
+								}`}
 						>
 							{segmentHasFlixTrain ? "FlixTrain" : "Price unknown"}
 						</span>
@@ -77,23 +87,27 @@ export const Segment = ({
 						</span>
 					)}
 				</div>
-				<button
-					onClick={(e) => {
-						e.stopPropagation();
-
-						const dbUrl = createSegmentSearchUrl(segment, 2);
-
-						if (dbUrl && !dbUrl.startsWith("Error:")) {
-							window.open(dbUrl, "_blank");
-						} else {
-							console.error("Failed to generate URL:", dbUrl);
-							alert("Failed to generate booking URL.");
-						}
-					}}
-					className="mt-1 px-3 py-1 bg-green-600 text-foreground text-xs rounded-md "
-				>
-					Zur Buchung
-				</button>
+				{bookingUrl ? (
+					<a
+						href={bookingUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						onClick={(e) => {
+							e.stopPropagation();
+						}}
+						className="mt-1 px-3 py-1 bg-green-600 text-foreground text-xs rounded-md inline-block text-center no-underline hover:bg-green-700 transition-colors"
+					>
+						Zur Buchung
+					</a>
+				) : (
+					<button
+						disabled
+						className="mt-1 px-3 py-1 bg-gray-400 text-foreground text-xs rounded-md cursor-not-allowed"
+						title="Booking URL could not be generated"
+					>
+						Zur Buchung
+					</button>
+				)}
 			</div>
 		</div>
 	);
