@@ -93,7 +93,7 @@ const reconLegSchema = z.object({
 				id: z.string(),
 			})
 		)
-		.min(1),
+		.min(0), // Allow empty arrays for walking segments or transfers
 });
 
 const reconResponseSchema = z.object({
