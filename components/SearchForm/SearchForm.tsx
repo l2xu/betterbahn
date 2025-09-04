@@ -17,7 +17,7 @@ export const SearchForm = () => {
 
 		if (!url.trim()) {
 			setUrlParseError(
-				"Please enter text containing a DB booking URL or paste a direct DB booking link"
+				"Bitte geben Sie Text mit einer DB-Buchungs-URL ein oder fügen Sie einen direkten DB-Buchungslink ein"
 			);
 			return;
 		}
@@ -26,7 +26,7 @@ export const SearchForm = () => {
 
 		if (!extractedUrl) {
 			setUrlParseError(
-				"No valid DB booking URL found. Please paste text containing a Deutsche Bahn booking link (from bahn.de with /buchung/start path) or check that your URL is correct."
+				"Keine gültige DB-Buchungs-URL gefunden. Bitte fügen Sie Text mit einem Deutsche Bahn Buchungslink ein (von bahn.de mit /buchung/start Pfad) oder überprüfen Sie, ob Ihre URL korrekt ist."
 			);
 			return;
 		}
@@ -138,7 +138,7 @@ export const SearchForm = () => {
 
 				{urlParseError && (
 					<div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-						<strong>Error:</strong> {urlParseError}
+						<strong>Fehler:</strong> {urlParseError}
 					</div>
 				)}
 			</form>

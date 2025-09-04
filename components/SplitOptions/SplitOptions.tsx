@@ -35,7 +35,7 @@ export const SplitOptions = ({
 		return (
 			<div className="text-center py-4">
 				<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600 mx-auto mb-2"></div>
-				<p className="text-yellow-700">Analyzing split journey options...</p>
+				<p className="text-yellow-700">Analysiere Split-Ticket Optionen...</p>
 			</div>
 		);
 	}
@@ -43,9 +43,9 @@ export const SplitOptions = ({
 	if (!splitOptions || splitOptions.length === 0) {
 		return (
 			<div className="text-center py-4">
-				<p className="text-foreground/70">No cheaper split options found.</p>
+				<p className="text-foreground/70">Keine günstigeren Split-Ticket Optionen gefunden.</p>
 				<p className="text-xs text-foreground/60 mt-1">
-					The direct journey appears to be the most cost-effective option.
+					Die direkte Verbindung scheint die kostengünstigste Option zu sein.
 				</p>
 			</div>
 		);
@@ -68,9 +68,9 @@ export const SplitOptions = ({
 										Option {splitIndex + 1}
 									</div>
 									<div className="text-sm">
-										⚠️ Cannot calculate pricing for
-										{splitPricing.hasFlixTrains ? " FlixTrain and" : ""}{" "}
-										regional services. Manual check required.
+										⚠️ Preisberechnung für
+										{splitPricing.hasFlixTrains ? " FlixTrain und" : ""}{" "}
+										Regionalverkehr nicht möglich. Manuelle Prüfung erforderlich.
 									</div>
 								</div>
 							</div>
@@ -164,7 +164,7 @@ export const SplitOptions = ({
 
 										<div className="text-sm text-foreground/60 my-2 pl-1 flex items-center">
 											<span>
-												{formatDuration({ legs: [departureLeg, arrivalLeg] }) || "Duration unknown"}
+												{formatDuration({ legs: [departureLeg, arrivalLeg] }) || "Dauer unbekannt"}
 											</span>
 											<span className="mx-2">·</span>
 											<span>
@@ -179,7 +179,7 @@ export const SplitOptions = ({
 										{splitOption.splitStations &&
 											splitOption.splitStations.length > 0 && (
 												<div className="text-sm text-foreground/60 mt-1 pl-1">
-													Via:{" "}
+													Über:{" "}
 													<span className="font-medium text-blue-600">
 														{splitOption.splitStations
 															.map((s) => s?.name)
@@ -240,9 +240,9 @@ export const SplitOptions = ({
 										</div>
 										{splitPricing.hasPartialPricing && (
 											<div className="mt-3 text-xs text-foreground p-2 bg-background rounded-md border border-orange-200">
-												* Some segments have unknown pricing (e.g., regional
-												trains, FlixTrain). The total price and savings are
-												based on available data.
+												* Einige Segmente haben unbekannte Preise (z.B. Regional-
+												züge, FlixTrain). Der Gesamtpreis und die Ersparnis basieren
+												auf verfügbaren Daten.
 											</div>
 										)}
 									</div>

@@ -21,12 +21,14 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="de">
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto px-2 py-6`}
 			>
 				<Navbar />
-				{children}
+				<main>
+					{children}
+				</main>
 				<Footer />
 			</body>
 		</html>

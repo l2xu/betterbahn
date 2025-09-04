@@ -77,12 +77,12 @@ export const Segment = ({
 							className={`text-xs font-medium ${segmentHasFlixTrain ? "text-purple-600" : "text-orange-600"
 								}`}
 						>
-							{segmentHasFlixTrain ? "FlixTrain" : "Price unknown"}
+							{segmentHasFlixTrain ? "FlixTrain" : "Preis unbekannt"}
 						</span>
 					) : (
 						<span>
 							{segment.price?.amount === undefined
-								? "Price on request"
+								? "Preis auf Anfrage"
 								: formatPriceDE(segment.price.amount)}
 						</span>
 					)}
