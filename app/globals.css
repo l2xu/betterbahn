@@ -17,7 +17,6 @@
 	--color-primary: var(--primary);
 	--font-sans: var(--font-geist-sans);
 	--font-mono: var(--font-geist-mono);
-	--background-image-train: url("/train.jpg");
 }
 
 body {
