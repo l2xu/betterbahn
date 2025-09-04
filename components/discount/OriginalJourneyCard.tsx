@@ -64,7 +64,7 @@ export function OriginalJourneyCard({
 
 						{/* Journey details */}
 						<JourneyInfoRow>
-							<span>{formatDuration(selectedJourney) || "Duration unknown"}</span>
+							<span>{formatDuration(selectedJourney) || "Dauer unbekannt"}</span>
 							<span className="">·</span>
 							<span>
 								{getChangesCount(selectedJourney)} Zwischenstopp

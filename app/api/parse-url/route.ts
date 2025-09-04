@@ -95,7 +95,7 @@ function extractJourneyDetails(url: string) {
 
 		// Extract from hash parameters (consistent approach)
 		const params = new URLSearchParams(hash.replace("#", ""));
-		
+
 		const soidValue = params.get("soid");
 		const zoidValue = params.get("zoid");
 		const dateValue = params.get("hd");
@@ -137,11 +137,9 @@ function displayJourneyInfo(journeyDetails: ExtractedData) {
 	}
 
 	const formatInfo = [
-		`From: ${journeyDetails.fromStation || "Unknown"} (${
-			journeyDetails.fromStationId || "N/A"
+		`From: ${journeyDetails.fromStation || "Unknown"} (${journeyDetails.fromStationId || "N/A"
 		})`,
-		`To: ${journeyDetails.toStation || "Unknown"} (${
-			journeyDetails.toStationId || "N/A"
+		`To: ${journeyDetails.toStation || "Unknown"} (${journeyDetails.toStationId || "N/A"
 		})`,
 		`Date: ${journeyDetails.date || "N/A"}`,
 		`Time: ${journeyDetails.time || "N/A"}`,
@@ -168,10 +166,25 @@ async function getResolvedUrlBrowserless(url: string) {
 
 	const newUrl = new URL("https://www.bahn.de/buchung/fahrplan/suche");
 
+	// Find the first and last connection sections that have stops
+	const verbindungsAbschnitte = data.verbindungen[0].verbindungsAbschnitte;
+
+	// Find first section with stops (origin)
+	const firstSectionWithStops = verbindungsAbschnitte.find(section => section.halte.length > 0);
+	if (!firstSectionWithStops) {
+		throw new Error("No connection sections with stops found for origin");
+	}
+
+	// Find last section with stops (destination) - search from the end
+	const lastSectionWithStops = verbindungsAbschnitte.slice().reverse().find(section => section.halte.length > 0);
+	if (!lastSectionWithStops) {
+		throw new Error("No connection sections with stops found for destination");
+	}
+
 	// Use hash parameters for consistency with DB URLs
 	const hashParams = new URLSearchParams();
-	hashParams.set("soid", data.verbindungen[0].verbindungsAbschnitte.at(0)!.halte.at(0)!.id);
-	hashParams.set("zoid", data.verbindungen[0].verbindungsAbschnitte.at(-1)!.halte.at(-1)!.id);
+	hashParams.set("soid", firstSectionWithStops.halte[0].id);
+	hashParams.set("zoid", lastSectionWithStops.halte[lastSectionWithStops.halte.length - 1].id);
 
 	// Add date information from the booking
 	if (vbidRequest.data.hinfahrtDatum) {

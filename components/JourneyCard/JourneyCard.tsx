@@ -23,9 +23,9 @@ export const JourneyCard = ({
 	const transferCountWithoutWalking = Math.max(0, nonWalkingLegs.length - 1);
 	const transferStationsWithoutWalking = getTransferStations(nonWalkingLegs);
 
-	const priceDisplay = journey.price?.amount !== undefined
-		? formatPriceDE(journey.price.amount)
-		: "Price on request";
+	const priceDisplay = journey.price?.amount === undefined
+		? "Preis auf Anfrage"
+		: formatPriceDE(journey.price.amount);
 
 	return (
 		<div
@@ -38,7 +38,7 @@ export const JourneyCard = ({
 			{/* Journey Header - Similar to SplitOptions */}
 			<div className="flex justify-between items-center mb-2">
 				<div>
-					<span className="text-sm text-foreground/60">Journey:</span>
+					<span className="text-sm text-foreground/60">Verbindung:</span>
 					<span className="text-lg font-bold text-blue-600 ml-2">
 						{formatTime(firstLeg?.departure)} → {formatTime(lastLeg?.arrival)}
 					</span>
@@ -59,12 +59,12 @@ export const JourneyCard = ({
 
 			{/* Route Summary */}
 			<div className="text-sm text-foreground/70 mb-2">
-				{firstLeg?.origin?.name || "Unknown"} →{" "}
-				{lastLeg?.destination?.name || "Unknown"}
+				{firstLeg?.origin?.name || "Unbekannt"} →{" "}
+				{lastLeg?.destination?.name || "Unbekannt"}
 				{transferCountWithoutWalking > 0 && (
 					<span className="ml-2 text-xs text-orange-600">
-						({transferCountWithoutWalking} transfer
-						{transferCountWithoutWalking > 1 ? "s" : ""})
+						({transferCountWithoutWalking} Umstieg
+						{transferCountWithoutWalking > 1 ? "e" : ""})
 					</span>
 				)}
 			</div>
@@ -82,15 +82,15 @@ export const JourneyCard = ({
 			<div className="border-t pt-3 flex justify-between items-center">
 				<div>
 					<div className="text-sm font-medium text-foreground/80">
-						Total: {priceDisplay}
+						Gesamt: {priceDisplay}
 					</div>
 					<div className="text-xs text-foreground/70">
-						{travelClass === "1" ? "1st Class" : "2nd Class"}
+						{travelClass === "1" ? "1. Klasse" : "2. Klasse"}
 						{transferCountWithoutWalking > 0 &&
 							transferStationsWithoutWalking.length > 0 && (
 								<span className="ml-2">
-									• {transferCountWithoutWalking} transfer
-									{transferCountWithoutWalking > 1 ? "s" : ""}
+									• {transferCountWithoutWalking} Umstieg
+									{transferCountWithoutWalking > 1 ? "e" : ""}
 								</span>
 							)}
 					</div>
