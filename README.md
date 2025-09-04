@@ -11,37 +11,27 @@ This project uses the [db-vendo-client](https://github.com/public-transport/db-v
 This is not an official repository or project of Deutsche Bahn AG. It is an independent project and not affiliated with or endorsed by Deutsche Bahn. To use this code or the db-vendo-client permission from the Deutsche Bahn AG is necessary.
 
 ## Getting Started
- Prerequisites
+
+### Prerequisites
+
 - [Node.js](https://nodejs.org/en/)
 - [pnpm](https://pnpm.io/) (see below for installation)
 - [git](https://git-scm.com/)
 
-
 To run the project locally:
 
+1. Clone the repository and navigate to the folder
 
-1. Clone the repository and navigate to the folder with git:
-
-   ```
-   git clone https://github.com/l2xu/betterbahn.git
-   cd betterbahn
-   ```
 2. Install dependencies with `pnpm install`
 
    You can install pnpm via corepack (included with Node.js):
 
-   ```
+   ```bash
    corepack enable
    corepack prepare pnpm@latest --activate
    ```
-   or via npm:
 
-      ```
-      npm install -g pnpm@latest-10
-      ```
-   then run `pnpm install` in the project directory.
-
-3. Start the development server with `pnpm run dev` and navigate to `http://localhost:3000` in your browser.
+3. Start the development server with `pnpm run dev`
 
 ## Docker
 
