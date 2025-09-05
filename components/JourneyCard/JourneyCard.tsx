@@ -23,9 +23,9 @@ export const JourneyCard = ({
 	const transferCountWithoutWalking = Math.max(0, nonWalkingLegs.length - 1);
 	const transferStationsWithoutWalking = getTransferStations(nonWalkingLegs);
 
-	const priceDisplay = journey.price?.amount !== undefined
-		? formatPriceDE(journey.price.amount)
-		: "Price on request";
+	const priceDisplay = journey.price?.amount === undefined
+		? "Price on request"
+		: formatPriceDE(journey.price.amount);
 
 	return (
 		<div
