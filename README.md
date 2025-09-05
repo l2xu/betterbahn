@@ -17,12 +17,12 @@ To run the project locally:
 1. Clone the repository and navigate to the folder
 2. Install dependencies with `pnpm install`
 
-  You can install pnpm via corepack (included with Node.js):
+You can install pnpm via corepack (included with Node.js):
 
- ```bash
- corepack enable
- corepack prepare pnpm@latest --activate
- ```
+```bash
+corepack enable
+corepack prepare pnpm@latest --activate
+```
 
 3. Start the development server with `pnpm run dev`
 
@@ -46,7 +46,7 @@ This project is licensed under the AGPL-3.0-only. See the [LICENSE](./LICENSE) f
 
 ## Community and Contribution
 
-Join the [Discord community](https://discord.gg/pQr9dv5S) to ask questions, share feedback, and connect with other users and contributors.
+Join the [Discord community](https://discord.gg/9pFXzs6XRK) to ask questions, share feedback, and connect with other users and contributors.
 
 Want to contribute? Please read the [Code of Conduct](/CODE_OF_CONDUCT.md) and see the [Contributing Guide](/CONTRIBUTE.md) for details on how to get started.
 
