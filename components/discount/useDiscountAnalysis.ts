@@ -3,11 +3,13 @@ import { LOADING_MESSAGES, STATUS, type Status } from "./constants";
 import type { VendoJourney } from "@/utils/schemas";
 import type { ExtractedData, ProgressInfo, SplitOption } from "@/utils/types";
 
+import { ProjectError } from "@/utils/projectError";
+
 export function useDiscountAnalysis() {
 	const [status, setStatus] = useState<Status>(STATUS.LOADING);
 	const [journeys, setJourneys] = useState<VendoJourney[]>([]);
 	const [extractedData, setExtractedData] = useState<ExtractedData | null>(null);
-	const [error, setError] = useState("");
+	const [error, setError] = useState<ProjectError | undefined>(undefined);
 	const [selectedJourney, setSelectedJourney] = useState<VendoJourney | null>(null);
 	const [splitOptions, setSplitOptions] = useState<SplitOption[] | null>(null);
 	const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES.initial);
@@ -87,12 +89,18 @@ export function useDiscountAnalysis() {
 					}
 				}
 			} catch (err) {
-				const typedErr = err as { message?: string };
 				console.error("Error analyzing split options:", err);
-				setError(
-					typedErr.message || "Fehler bei der Analyse der Split-Optionen."
-				);
-				setStatus(STATUS.ERROR);
+				if (error instanceof ProjectError) {
+					setError(error);
+				} else {
+					const typedErr = err as { message?: string };
+					setError(
+						new ProjectError({
+							name: "UNKNOWN_ERROR",
+							message: typedErr.message || "Fehler bei der Analyse der Split-Optionen.",
+						})
+					);
+				}
 				setProgressInfo(null);
 			}
 		},
@@ -107,8 +115,10 @@ export function useDiscountAnalysis() {
 			if (extractedData) {
 				analyzeSplitOptions(journey, extractedData);
 			} else {
-				setError("Reisedaten nicht gefunden, um Split-Analyse zu starten.");
-				setStatus(STATUS.ERROR);
+				setError(new ProjectError({
+					name: "INPUT_ERROR",
+					message: "Reisedaten nicht gefunden, um Split-Analyse zu starten.",
+				}));
 			}
 		},
 		[extractedData, analyzeSplitOptions]

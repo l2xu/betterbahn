@@ -21,7 +21,7 @@ const handler = async (request: Request) => {
 	);
 
 	if ("error" in journeyDetails) {
-		return Response.json({ error: journeyDetails.error });
+		return Response.json({ error: journeyDetails.error }, { status: 500 });
 	}
 
 	if (!journeyDetails.fromStationId || !journeyDetails.toStationId) {

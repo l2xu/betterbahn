@@ -1,4 +1,5 @@
-import { type ZodType, prettifyError } from "zod/v4";
+import { prettifyError, type ZodType } from "zod/v4";
+import { ProjectError } from "@/utils/projectError";
 
 export const fetchAndValidateJson = async <
 	T extends ZodType,
@@ -32,9 +33,11 @@ export const fetchAndValidateJson = async <
 	const response = await fetch(url, init);
 
 	if (!response.ok) {
-		throw new Error(
-			`Failed to fetch ${url}: ${response.status} ${response.statusText}`
-		);
+		throw new ProjectError({
+			name: "API_ERROR",
+			message: `Failed to fetch ${url}: ${response.status} ${response.statusText}`,
+			cause: JSON.stringify(await response.json().then((value) => value.error), null, 2),
+		});
 	}
 
 	let json: unknown;
