@@ -17,12 +17,12 @@ To run the project locally:
 1. Clone the repository and navigate to the folder
 2. Install dependencies with `pnpm install`
 
-   You can install pnpm via corepack (included with Node.js):
+You can install pnpm via corepack (included with Node.js):
 
-   ```
-   corepack enable
-   corepack prepare pnpm@latest --activate
-   ```
+```bash
+corepack enable
+corepack prepare pnpm@latest --activate
+```
 
 3. Start the development server with `pnpm run dev`
 
@@ -38,7 +38,7 @@ You can run the app with docker compose:
 
 `docker compose -f docker-compose/docker-compose.yaml --project-directory=./ up -d`
 
-http://localhost:3000
+<http://localhost:3000>
 
 ## License
 

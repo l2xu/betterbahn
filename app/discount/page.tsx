@@ -1,9 +1,18 @@
 "use client";
-import { JourneyResults } from "@/components/JourneyResults";
+import dynamic from "next/dynamic";
 import { StatusBox } from "@/components/discount/StatusBox";
-import { OriginalJourneyCard } from "@/components/discount/OriginalJourneyCard";
-import { SplitOptionsCard } from "@/components/discount/SplitOptionsCard";
 import { ErrorDisplay } from "@/components/discount/ErrorDisplay";
+
+// Lazy load heavy components that are not immediately visible
+const JourneyResults = dynamic(() => import("@/components/JourneyResults").then(mod => ({ default: mod.JourneyResults })), {
+	loading: () => <div className="animate-pulse bg-accent h-32 rounded-lg"></div>
+});
+const OriginalJourneyCard = dynamic(() => import("@/components/discount/OriginalJourneyCard").then(mod => ({ default: mod.OriginalJourneyCard })), {
+	loading: () => <div className="animate-pulse bg-accent h-48 rounded-lg"></div>
+});
+const SplitOptionsCard = dynamic(() => import("@/components/discount/SplitOptionsCard").then(mod => ({ default: mod.SplitOptionsCard })), {
+	loading: () => <div className="animate-pulse bg-accent h-64 rounded-lg"></div>
+});
 import { useDiscountAnalysis } from "@/components/discount/useDiscountAnalysis";
 import { LOADING_MESSAGES, STATUS } from "@/components/discount/constants";
 import { fetchAndValidateJson } from "@/utils/fetchAndValidateJson";
@@ -40,7 +49,7 @@ function Discount() {
 			try {
 				const urlFromParams = searchParams.get("url");
 				if (!urlFromParams) {
-					throw new Error("No URL provided for parsing.");
+					throw new Error("Keine URL zum Parsen angegeben.");
 				}
 
 				// Parse URL
@@ -186,7 +195,7 @@ function Discount() {
 
 export default function DiscountPage() {
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
+		<Suspense fallback={<div>Laden...</div>}>
 			<Discount />
 		</Suspense>
 	);

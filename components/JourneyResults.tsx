@@ -24,7 +24,7 @@ export const JourneyResults = ({
 		<div className="bg-background rounded-lg shadow-md p-6">
 			{/* Überschrift für verfügbare Verbindungen */}
 			<h2 className="text-xl font-bold mb-4 text-foreground">
-				Available Journeys
+				Verfügbare Verbindungen
 			</h2>
 			<div className="space-y-4">
 				{/* Iteriere über alle Verbindungen und zeige sie an */}

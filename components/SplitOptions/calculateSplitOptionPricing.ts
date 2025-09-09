@@ -71,7 +71,7 @@ export const calculateSplitOptionPricing = ({
 		let totalSegments = splitOption.segments.length;
 
 		splitOption.segments.forEach((segment, index) => {
-			const hasPrice = segment.price && segment.price.amount != null;
+			const hasPrice = segment.price && segment.price.amount !== null;
 			const segmentHasFlixTrain = getJourneyLegsWithTransfers(segment).some(
 				(leg) => legIsFlixTrain(leg)
 			);
