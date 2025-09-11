@@ -1,20 +1,39 @@
 import type { ProgressInfo } from "@/utils/types";
 
+import { ProjectError } from "@/utils/projectError";
+
 interface StatusBoxProps {
-	message: string;
+	statusMessage: string;
 	isLoading: boolean;
 	progressInfo?: ProgressInfo;
+	error?: ProjectError;
 }
 
-export function StatusBox({ message, isLoading, progressInfo }: StatusBoxProps) {
+export function StatusBox({ statusMessage, isLoading, progressInfo, error }: StatusBoxProps) {
+	const isError = Boolean(error);
+	const message = isError ? `Fehler: ${error?.message}` : statusMessage;
+	const showLoading = !isError && isLoading;
+
 	return (
 		<div className="w-full mb-6">
-			<div className="bg-primary text-white rounded-lg p-3 flex flex-col items-center justify-center py-8">
+			<div
+				className={`rounded-lg p-3 flex flex-col items-center justify-center py-8 ${
+					isError
+						? "bg-red-600 text-white border border-red-800 shadow-md"
+						: "bg-primary text-white"
+				}`}
+			>
 				<div className="flex items-center justify-center mb-2">
-					{isLoading && (
-						<div className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-foreground border-b-transparent mr-3" />
+					{showLoading && (
+						<div className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-b-transparent mr-3" />
 					)}
-					<span className="text-xl font-medium italic">{message}</span>
+					<span
+						className={`text-xl italic ${
+							isError ? "font-bold underline decoration-white/70" : "font-medium"
+						}`}
+					>
+						{message}
+					</span>
 				</div>
 
 				{/* Progress information */}

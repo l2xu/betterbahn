@@ -14,7 +14,6 @@ export const STATUS = {
 	SELECTING: "selecting",
 	ANALYZING: "analyzing",
 	DONE: "done",
-	ERROR: "error",
 } as const;
 
 export type Status = (typeof STATUS)[keyof typeof STATUS];
