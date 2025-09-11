@@ -10,7 +10,7 @@ import { fetchAndValidateJson } from "@/utils/fetchAndValidateJson";
 import { searchForJourneys } from "@/utils/journeyUtils";
 import type { VendoJourney } from "@/utils/schemas";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { z } from "zod/v4";
 
 function Discount() {
@@ -34,14 +34,27 @@ function Discount() {
 		handleJourneySelect,
 	} = useDiscountAnalysis();
 
+	// Guard gegen doppelte Initialisierung in Next.js Dev/StrictMode (gleiche URL nicht erneut verarbeiten)
+	const lastUrlRef = useRef<string | null>(null);
+
 	// Effects
 	useEffect(() => {
+		// Verhindert doppelte Ausführung im Dev/StrictMode
+		const urlFromParams = searchParams.get("url");
+		if (!urlFromParams) {
+			setError("No URL provided for parsing.");
+			setStatus(STATUS.ERROR);
+			return;
+		}
+		if (lastUrlRef.current === urlFromParams) {
+			// Gleiche URL wurde bereits initialisiert
+			return;
+		}
+		lastUrlRef.current = urlFromParams;
+
 		const initializeFlow = async () => {
 			try {
-				const urlFromParams = searchParams.get("url");
-				if (!urlFromParams) {
-					throw new Error("No URL provided for parsing.");
-				}
+				// urlFromParams ist oben geprüft
 
 				// Parse URL
 				setLoadingMessage(LOADING_MESSAGES.parsing);

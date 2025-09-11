@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { LOADING_MESSAGES, STATUS, type Status } from "./constants";
 import type { VendoJourney } from "@/utils/schemas";
 import type { ExtractedData, ProgressInfo, SplitOption } from "@/utils/types";
@@ -12,6 +12,8 @@ export function useDiscountAnalysis() {
 	const [splitOptions, setSplitOptions] = useState<SplitOption[] | null>(null);
 	const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES.initial);
 	const [progressInfo, setProgressInfo] = useState<ProgressInfo | null>(null);
+	// Laufenden SSE-Request zwischenspeichern, um ihn bei erneutem Start abbrechen zu können
+	const sseAbortRef = useRef<AbortController | null>(null);
 
 	const analyzeSplitOptions = useCallback(
 		async (journey: VendoJourney, journeyData: ExtractedData) => {
@@ -20,6 +22,13 @@ export function useDiscountAnalysis() {
 			setProgressInfo(null);
 
 			try {
+				// Vorherigen laufenden Stream abbrechen, um doppelte Anfragen zu verhindern (StrictMode etc.)
+				if (sseAbortRef.current) {
+					try { sseAbortRef.current.abort(); } catch { /* noop */ }
+				}
+				const abortController = new AbortController();
+				sseAbortRef.current = abortController;
+
 				const response = await fetch("/api/split-journey", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
@@ -33,58 +42,69 @@ export function useDiscountAnalysis() {
 						travelClass: journeyData?.travelClass || "2",
 						useStreaming: true, // Enable streaming for progress updates
 					}),
+					signal: abortController.signal,
+					cache: "no-store",
 				});
 
 				if (!response.ok) {
 					throw new Error("Failed to analyze split options");
 				}
 
-				// Handle Server-Sent Events
-				const reader = response.body!.getReader();
-				const decoder = new TextDecoder();
-				let buffer = "";
+				// Bevorzugt SSE; Fallback auf JSON, um Hänger zu vermeiden
+				const contentType = response.headers.get("content-type") || "";
+				if (contentType.includes("text/event-stream")) {
+					const reader = response.body!.getReader();
+					const decoder = new TextDecoder();
+					let buffer = "";
 
-				while (true) {
-					const { done, value } = await reader.read();
-					if (done) break;
+					while (true) {
+						const { done, value } = await reader.read();
+						if (done) break;
 
-					buffer += decoder.decode(value, { stream: true });
-					const lines = buffer.split("\n");
-					buffer = lines.pop()!; // Keep incomplete line in buffer
+						buffer += decoder.decode(value, { stream: true });
+						const lines = buffer.split("\n");
+						buffer = lines.pop()!; // Keep incomplete line in buffer
 
-					for (const line of lines) {
-						if (line.startsWith("data: ")) {
-							try {
-								const jsonData = line.slice(6).trim();
-								if (!jsonData) continue; // Skip empty data lines
+						for (const line of lines) {
+							if (line.startsWith("data: ")) {
+								try {
+									const jsonData = line.slice(6).trim();
+									if (!jsonData) continue; // Skip empty data lines
 
-								const data = JSON.parse(jsonData);
+									const data = JSON.parse(jsonData);
 
-								if (data.type === "progress") {
-									setProgressInfo({
-										checked: data.checked,
-										total: data.total,
-										currentStation: data.currentStation,
-									});
-									setLoadingMessage(data.message);
-								} else if (data.type === "complete") {
-									setSplitOptions(data.splitOptions || []);
-									setStatus(STATUS.DONE);
-									setProgressInfo(null);
-								} else if (data.type === "error") {
-									throw new Error(data.error);
+									if (data.type === "progress") {
+										setProgressInfo({
+											checked: data.checked,
+											total: data.total,
+											currentStation: data.currentStation,
+										});
+										if (data.message) setLoadingMessage(data.message);
+									} else if (data.type === "complete") {
+										setSplitOptions(data.splitOptions || []);
+										setStatus(STATUS.DONE);
+										setProgressInfo(null);
+									} else if (data.type === "error") {
+										throw new Error(data.error);
+									}
+								} catch (parseError) {
+									console.error("Error parsing SSE data:", parseError, "Line:", line);
 								}
-							} catch (parseError) {
-								console.error(
-									"Error parsing SSE data:",
-									parseError,
-									"Line:",
-									line
-								);
-								// Continue processing other lines instead of failing completely
 							}
 						}
 					}
+				} else {
+					// Fallback: JSON-Antwort (z. B. bei 0 Split-Stationen)
+					const data = await response.json().catch(() => null as any);
+					if (!data) {
+						throw new Error("Ungültige Server-Antwort");
+					}
+					if (data.error) {
+						throw new Error(data.error);
+					}
+					setSplitOptions(data.splitOptions || []);
+					setStatus(STATUS.DONE);
+					setProgressInfo(null);
 				}
 			} catch (err) {
 				const typedErr = err as { message?: string };
