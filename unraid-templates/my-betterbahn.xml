@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>BetterBahn</Name>
+  <Repository>ghcr.io/l2xu/betterbahn:latest</Repository>
+  <Registry>https://github.com/users/l2xu/packages/container/package/betterbahn</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/l2xu/betterbahn/issues</Support>
+  <Project>https://github.com/l2xu/betterbahn</Project>
+  <beta>true</beta>
+  <Overview>BetterBahn is a web app for finding the best train journeys in Germany. While split ticketing is supported to help save money, it is rather the exception. The app will be extended with many more features in the future.&#xD;
+&#xD;
+Note: Initial start may take a while.</Overview>
+  <Category>Tools: Other:</Category>
+  <WebUI>http://[IP]:[PORT:3000]/</WebUI>
+  <TemplateURL/>
+  <Icon>https://raw.githubusercontent.com/l2xu/betterbahn/main/public/public/betterbahn_logo.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1756410520</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="WebUI Port" Target="3000" Default="3000" Mode="tcp" Description="Container Port: 3000 (BetterBahn Web-UI)" Type="Port" Display="always" Required="true" Mask="false">3000</Config>
+  <Config Name="TZ" Target="TZ" Default="Europe/Berlin" Mode="" Description="Zeitzone im Container" Type="Variable" Display="advanced-hide" Required="false" Mask="false">Europe/Berlin</Config>
+  <TailscaleStateDir/>
+</Container>
