@@ -3,6 +3,7 @@ import { Navbar } from "@/components/Layout/Navbar";
 import { Geist, Geist_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
+import { TRPCReactProvider } from "@/utils/TRPCProvider";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -21,14 +22,16 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
-		<html lang="en">
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto px-2 py-6`}
-			>
-				<Navbar />
-				{children}
-				<Footer />
-			</body>
-		</html>
+		<TRPCReactProvider>
+			<html lang="en">
+				<body
+					className={`${geistSans.variable} ${geistMono.variable} antialiased container mx-auto px-2 py-6`}
+				>
+					<Navbar />
+					{children}
+					<Footer />
+				</body>
+			</html>
+		</TRPCReactProvider>
 	);
 }

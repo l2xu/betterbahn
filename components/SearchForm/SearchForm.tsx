@@ -31,12 +31,15 @@ export const SearchForm = () => {
 
 		const searchParams = new URLSearchParams({
 			url: extractedUrl,
-			bahnCard: formData.bahnCard,
 			hasDeutschlandTicket: String(formData.hasDeutschlandTicket),
 			passengerAge: String(formData.passengerAge),
 			travelClass: formData.travelClass,
 			// autoSearch: "true", // Flag to indicate auto-search should happen
 		});
+
+		if (formData.bahnCard !== "none") {
+			searchParams.set("bahnCard", formData.bahnCard);
+		}
 
 		router.push(`/discount?${searchParams.toString()}`);
 	};
