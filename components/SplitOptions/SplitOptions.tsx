@@ -1,12 +1,11 @@
 "use client";
 
-import type { VendoJourney } from "@/utils/schemas";
-import type { SplitOption } from "@/utils/types";
-import { useState } from "react";
-import { getStationName } from "@/utils/journeyUtils";
+import type { SplitAnalysis } from "@/app/api/journeys/analyzeSingleSplit";
 import { formatDuration, formatTime } from "@/utils/formatUtils";
-
+import { getStationName } from "@/utils/journeyUtils";
 import { formatPriceDE } from "@/utils/priceUtils";
+import type { VendoJourney } from "@/utils/schemas";
+import { useState } from "react";
 import { getOptionsToShow } from "./getOptionsToShow";
 import { Segment } from "./Segment";
 
@@ -17,7 +16,7 @@ export const SplitOptions = ({
 	loadingSplits,
 	hasDeutschlandTicket,
 }: {
-	splitOptions: SplitOption[];
+	splitOptions: SplitAnalysis[];
 	originalJourney: VendoJourney;
 	loadingSplits: unknown;
 	hasDeutschlandTicket: boolean;
@@ -149,10 +148,16 @@ export const SplitOptions = ({
 													<>
 														<div className="font-bold text-lg text-green-600">
 															Spare{" "}
-															{formatPriceDE(splitPricing.adjustedSavings)}
+															{splitPricing.adjustedSavings === null
+																? "?"
+																: formatPriceDE(splitPricing.adjustedSavings)}
 														</div>
 														<div className="text-xl font-bold text-foreground">
-															{formatPriceDE(splitPricing.adjustedTotalPrice)}
+															{splitPricing.adjustedTotalPrice === null
+																? "?"
+																: formatPriceDE(
+																		splitPricing.adjustedTotalPrice
+																  )}
 															{splitPricing.hasPartialPricing && (
 																<span className="text-orange-600 ml-1">*</span>
 															)}
@@ -164,7 +169,8 @@ export const SplitOptions = ({
 
 										<div className="text-sm text-foreground/60 my-2 pl-1 flex items-center">
 											<span>
-												{formatDuration({ legs: [departureLeg, arrivalLeg] }) || "Duration unknown"}
+												{formatDuration({ legs: [departureLeg, arrivalLeg] }) ||
+													"Duration unknown"}
 											</span>
 											<span className="mx-2">·</span>
 											<span>
