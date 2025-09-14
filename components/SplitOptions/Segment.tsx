@@ -17,11 +17,15 @@ export const Segment = ({
 	index,
 	segmentsWithoutPricing,
 	hasDeutschlandTicket,
+	bahnCard,
+	travelClass
 }: {
 	segment: VendoJourney;
 	index: number;
 	segmentsWithoutPricing: number[];
 	hasDeutschlandTicket: boolean;
+	bahnCard: string | null;
+	travelClass: string
 }) => {
 	const segmentHasFlixTrain = getJourneyLegsWithTransfers(segment).some((leg) =>
 		legIsFlixTrain(leg)
@@ -81,7 +85,7 @@ export const Segment = ({
 					onClick={(e) => {
 						e.stopPropagation();
 
-						const dbUrl = createSegmentSearchUrl(segment, 2);
+						const dbUrl = createSegmentSearchUrl(segment, Number(travelClass), hasDeutschlandTicket, bahnCard);
 
 						if (dbUrl && !dbUrl.startsWith("Error:")) {
 							window.open(dbUrl, "_blank");

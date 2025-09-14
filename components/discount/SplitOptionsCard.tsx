@@ -57,6 +57,8 @@ export function SplitOptionsCard({
 					originalJourney={selectedJourney}
 					loadingSplits={false}
 					hasDeutschlandTicket={extractedData?.hasDeutschlandTicket || false}
+					travelClass={extractedData?.travelClass || "2"}
+					bahnCard={extractedData?.bahnCard || null}
 				/>
 			);
 		}

@@ -50,14 +50,35 @@ function createStationId(station: Station): string {
 }
 
 /**
+ * Creates a urlParameter that encodes the available Bahncard
+ * @param {number} travelClass - Travel class (1 or 2)
+ * @param {string | null} bahncard - Type of Bahncard ("25", "50", or null for none)
+ * @returns {string} Encoded Bahncard parameter
+ */
+function createBcParameter(travelClass: number, bahnCard: string | null) {
+	switch (bahnCard) {
+		case "25":
+			return `13:17:KLASSE_${travelClass}:1`
+		case "50":
+			return `13:23:KLASSE_${travelClass}:1`
+		default:
+			return "13:16:KLASSENLOS:1"
+	}
+}
+
+/**
  * Creates a DB search URL for a journey segment
  * @param {Object} segment - Journey segment object
  * @param {number} travelClass - Travel class (1 or 2)
+ * @param {boolean} hasDeutschlandTicket - Deutschlandticket
+ * @param {string | null} bahnCard - Type of Bahncard ("25", "50", or null for none)
  * @returns {string} DB website search URL
  */
 export function createSegmentSearchUrl(
 	segment: VendoJourney,
-	travelClass: number = 2
+	travelClass: number = 2,
+	hasDeutschlandTicket: boolean,
+	bahnCard: string | null
 ): string {
 	if (!segment?.legs?.length)
 		throw new Error("Invalid segment: missing legs data");
@@ -65,6 +86,7 @@ export function createSegmentSearchUrl(
 	const firstLeg = legs[0];
 	const lastLeg = legs[legs.length - 1];
 	const cleanDate = formatDate(firstLeg.departure);
+	const bcParameter = createBcParameter(travelClass, bahnCard)
 
 	// Modern URL building with proper validation
 
@@ -79,7 +101,7 @@ export function createSegmentSearchUrl(
 		`so=${encodeURIComponent(firstLeg.origin.name)}`,
 		`zo=${encodeURIComponent(lastLeg.destination.name)}`,
 		`kl=${travelClass}`,
-		"r=13:16:KLASSENLOS:1",
+		`r=${bcParameter}`,
 	];
 
 	const originId = addStationId(firstLeg.origin, "s", parts);
@@ -106,7 +128,7 @@ export function createSegmentSearchUrl(
 		"fm=false",
 		"bp=false",
 		"dlt=false",
-		"dltv=false"
+		`dltv=${hasDeutschlandTicket}`
 	);
 
 	return `https://www.bahn.de/buchung/fahrplan/suche#${parts.join("&")}`;

@@ -16,11 +16,15 @@ export const SplitOptions = ({
 	originalJourney,
 	loadingSplits,
 	hasDeutschlandTicket,
+	travelClass,
+	bahnCard
 }: {
 	splitOptions: SplitOption[];
 	originalJourney: VendoJourney;
 	loadingSplits: unknown;
 	hasDeutschlandTicket: boolean;
+	travelClass: string;
+	bahnCard: string | null;
 }) => {
 	// State für erweiterte Optionsanzeige (erste Option standardmäßig erweitert)
 	const [expandedOption, setExpandedOption] = useState<number | null>(0);
@@ -235,6 +239,8 @@ export const SplitOptions = ({
 														splitPricing.segmentsWithoutPricing
 													}
 													key={segmentIndex}
+													travelClass={travelClass}
+													bahnCard={bahnCard}
 												/>
 											))}
 										</div>
