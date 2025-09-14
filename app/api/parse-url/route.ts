@@ -171,12 +171,21 @@ async function getResolvedUrlBrowserless(url: string, clientCookies: string = ''
 		.map(cookie => cookie.split(';')[0]) // Take only the name=value part
 		.filter(cookie => cookie.trim());
 
-	const allCookies = [];
+	// Properly format cookies with semicolons and spaces between them
+	const allCookiesSet = new Set<string>();
+	
+	// Add client cookies (split and clean if needed)
 	if (clientCookies) {
-		allCookies.push(clientCookies);
+		clientCookies.split(';').forEach(cookie => {
+			const trimmed = cookie.trim();
+			if (trimmed) allCookiesSet.add(trimmed);
+		});
 	}
-	allCookies.push(...responseCookies);
-
+	
+	// Add response cookies
+	responseCookies.forEach(cookie => allCookiesSet.add(cookie));
+	
+	const allCookies = Array.from(allCookiesSet);
 	console.log("Final cookie header:", allCookies.join('; '));
 
 	const { data } = await parseHinfahrtReconWithAPI(vbidRequest.data, allCookies)
