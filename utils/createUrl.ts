@@ -52,10 +52,10 @@ function createStationId(station: Station): string {
 /**
  * Creates a urlParameter that encodes the available Bahncard
  * @param {number} travelClass - Travel class (1 or 2)
- * @param {string | null} bahncard - Type of Bahncard ("25", "50", or null for none)
+ * @param {string | null} bahnCard - Type of Bahncard ("25", "50", or null for none)
  * @returns {string} Encoded Bahncard parameter
  */
-function createBcParameter(travelClass: number, bahnCard: string | null) {
+function createBcParameter(travelClass: number, bahnCard: string | null): string {
 	switch (bahnCard) {
 		case "25":
 			return `13:17:KLASSE_${travelClass}:1`
