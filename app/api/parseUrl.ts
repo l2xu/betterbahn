@@ -1,47 +1,40 @@
 import { fetchAndValidateJson } from "@/utils/fetchAndValidateJson";
 import { parseHinfahrtReconWithAPI } from "@/utils/parseHinfahrtRecon";
 import { vbidSchema } from "@/utils/schemas";
+import { t } from "@/utils/trpc-init";
 import type { ExtractedData } from "@/utils/types";
-import { apiErrorHandler } from "../_lib/error-handler";
+import { TRPCError } from "@trpc/server";
+import { z } from "zod/v4";
 
-// POST-Route für URL-Parsing
-const handler = async (request: Request) => {
-	const body = await request.json();
-	const { url } = body;
-
-	if (!url) {
-		return Response.json(
-			{ error: "Missing required parameter: url" },
-			{ status: 400 }
+export const parseUrl = t.procedure
+	.input(
+		z.object({
+			url: z.string(),
+		})
+	)
+	.query(async ({ input }) => {
+		const journeyDetails = extractJourneyDetails(
+			await getResolvedUrlBrowserless(input.url)
 		);
-	}
 
-	const journeyDetails = extractJourneyDetails(
-		await getResolvedUrlBrowserless(url)
-	);
+		if ("error" in journeyDetails) {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				cause: journeyDetails.error,
+			});
+		}
 
-	if ("error" in journeyDetails) {
-		return Response.json({ error: journeyDetails.error });
-	}
+		if (!journeyDetails.fromStationId || !journeyDetails.toStationId) {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: "journeyDetails is missing fromStationId or toStationId",
+			});
+		}
 
-	if (!journeyDetails.fromStationId || !journeyDetails.toStationId) {
-		return Response.json(
-			{ error: "journeyDetails is missing fromStationId or toStationId" },
-			{ status: 500 }
-		);
-	}
+		displayJourneyInfo(journeyDetails);
 
-	displayJourneyInfo(journeyDetails);
-
-	return Response.json({
-		success: true,
-		journeyDetails,
+		return journeyDetails;
 	});
-};
-
-export async function POST(request: Request) {
-	return await apiErrorHandler(() => handler(request));
-}
 
 const extractStationName = (value: string | null) => {
 	if (!value) {
@@ -95,7 +88,7 @@ function extractJourneyDetails(url: string) {
 
 		// Extract from hash parameters (consistent approach)
 		const params = new URLSearchParams(hash.replace("#", ""));
-		
+
 		const soidValue = params.get("soid");
 		const zoidValue = params.get("zoid");
 		const dateValue = params.get("hd");
@@ -170,8 +163,14 @@ async function getResolvedUrlBrowserless(url: string) {
 
 	// Use hash parameters for consistency with DB URLs
 	const hashParams = new URLSearchParams();
-	hashParams.set("soid", data.verbindungen[0].verbindungsAbschnitte.at(0)!.halte.at(0)!.id);
-	hashParams.set("zoid", data.verbindungen[0].verbindungsAbschnitte.at(-1)!.halte.at(-1)!.id);
+	hashParams.set(
+		"soid",
+		data.verbindungen[0].verbindungsAbschnitte.at(0)!.halte.at(0)!.id
+	);
+	hashParams.set(
+		"zoid",
+		data.verbindungen[0].verbindungsAbschnitte.at(-1)!.halte.at(-1)!.id
+	);
 
 	// Add date information from the booking
 	if (vbidRequest.data.hinfahrtDatum) {
