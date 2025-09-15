@@ -75,9 +75,9 @@ export const Segment = ({
 						</span>
 					) : (
 						<span>
-							{segment.price?.amount !== undefined
-								? formatPriceDE(segment.price.amount)
-								: "Price on request"}
+							{segment.price?.amount === undefined
+								? "Price on request"
+								: formatPriceDE(segment.price.amount)}
 						</span>
 					)}
 				</div>
