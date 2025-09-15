@@ -6,3 +6,12 @@ services:
       - TZ=Europe/Berlin # Timezone, dont Remove or else There will be time issues with tickets.
     ports:
       - "3000:3000"
+    read_only: true
+    user: "1000:1000"
+    tmpfs:
+      - /tmp
+    privileged: false
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges=true
