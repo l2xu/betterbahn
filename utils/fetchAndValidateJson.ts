@@ -32,6 +32,24 @@ export const fetchAndValidateJson = async <
 	const response = await fetch(url, init);
 
 	if (!response.ok) {
+		if (response.status === 403) {
+			console.error(`403 Forbidden error accessing ${url}`);
+			console.error(`Request headers:`, init.headers);
+			
+			// Try to get response body for additional error details
+			let responseText = '';
+			try {
+				responseText = await response.text();
+				console.error(`Response body: ${responseText.substring(0, 500)}`);
+			} catch (e) {
+				console.error(`Could not read response body: ${e}`);
+			}
+			
+			throw new Error(
+				`Access forbidden (403) to ${url} - API may have blocked the request due to missing authentication or anti-scraping measures`
+			);
+		}
+		
 		throw new Error(
 			`Failed to fetch ${url}: ${response.status} ${response.statusText}`
 		);
