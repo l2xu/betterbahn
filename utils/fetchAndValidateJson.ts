@@ -32,9 +32,12 @@ export const fetchAndValidateJson = async <
 	const response = await fetch(url, init);
 
 	if (!response.ok) {
-		throw new Error(
-			`Failed to fetch ${url}: ${response.status} ${response.statusText}`
-		);
+		const errorMessage =
+			response.status === 500
+				? `Server error (500). Diese Problem ist uns bekannt und wir arbeiten daran, es zu beheben. Ein Status über den Fehler finden Sie unter https://github.com/l2xu/betterbahn/issues/57`
+				: `Failed to fetch ${url}: ${response.status} ${response.statusText}`;
+
+		throw new Error(errorMessage);
 	}
 
 	let json: unknown;

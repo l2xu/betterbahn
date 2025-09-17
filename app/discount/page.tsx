@@ -115,7 +115,7 @@ function Discount() {
 
 	// Computed values
 	const getStatusMessage = () => {
-		if (status === STATUS.ERROR) return `Fehler: ${error}`;
+		if (status === STATUS.ERROR) return null; // Don't show errors in StatusBox
 		if (status === STATUS.DONE) return "Analyse abgeschlossen";
 		return loadingMessage;
 	};
@@ -174,11 +174,13 @@ function Discount() {
 
 	return (
 		<section className="mt-16 w-full max-w-7xl mx-auto ">
-			<StatusBox
-				message={getStatusMessage()}
-				isLoading={isLoading}
-				progressInfo={progressInfo ?? undefined}
-			/>
+			{getStatusMessage() && (
+				<StatusBox
+					message={getStatusMessage()!}
+					isLoading={isLoading}
+					progressInfo={progressInfo ?? undefined}
+				/>
+			)}
 			{renderContent()}
 		</section>
 	);
