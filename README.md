@@ -22,6 +22,11 @@ To run the project locally:
 
 1. Clone the repository and navigate to the folder
 
+   ```shell
+   git clone https://github.com/l2xu/betterbahn.git
+   cd betterbahn
+   ```
+
 2. Install dependencies with `pnpm install`
 
    You can install pnpm via corepack (included with Node.js):
@@ -31,7 +36,15 @@ To run the project locally:
    corepack prepare pnpm@latest --activate
    ```
 
-3. Start the development server with `pnpm run dev`
+   or via npm:
+
+   ```shell
+   npm install -g pnpm@latest-10
+   ```
+
+   then run `pnpm install` in the project directory.
+
+3. Start the development server with `pnpm run dev` and navigate to `http://localhost:3000` in your browser.
 
 ## Docker
 
