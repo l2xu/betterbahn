@@ -45,7 +45,7 @@ You can run the app with docker compose:
 
 `docker compose -f docker-compose/docker-compose.yaml --project-directory=./ up -d`
 
-http://localhost:3000
+<http://localhost:3000>
 
 ## Installation Guides
 
