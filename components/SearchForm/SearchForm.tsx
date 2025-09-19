@@ -95,7 +95,7 @@ export const SearchForm = () => {
 				<button
 					onClick={handleUrlParsingAndNavigation}
 					disabled={!url.trim()}
-					className="w-full bg-primary text-white py-3 px-4 rounded-full hover:primaryfocus:outline-none  disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg font-semibold"
+					className="w-full bg-primary text-white py-3 px-4 rounded-full hover:cursor-pointer hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg font-semibold"
 				>
 					Bessere Verbindung suchen
 				</button>
