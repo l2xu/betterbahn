@@ -53,9 +53,9 @@ export const SearchForm = () => {
 						onChange={(e) => updateFormData({ bahnCard: e.target.value })}
 						className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
 					>
-						<option value="none">Keine BahnCard</option>
-						<option value="25">BahnCard 25 </option>
-						<option value="50">BahnCard 50 </option>
+						<option className="text-black" value="none">Keine BahnCard</option>
+						<option className="text-black" value="25">BahnCard 25 </option>
+						<option className="text-black" value="50">BahnCard 50 </option>
 					</select>
 					<input
 						type="number"
@@ -75,8 +75,8 @@ export const SearchForm = () => {
 						}
 						className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
 					>
-						<option value="true">Deutschlandticket</option>
-						<option value="false">Kein Deutschlandticket</option>
+						<option className="text-black" value="true">Deutschlandticket</option>
+						<option className="text-black" value="false">Kein Deutschlandticket</option>
 					</select>
 					<select
 						value={String(formData.travelClass)}
@@ -87,8 +87,8 @@ export const SearchForm = () => {
 						}
 						className="w-full px-3 py-2 resize-vertical border-b-2 border-gray-300 focus:ring-2 focus:ring-primary"
 					>
-						<option value="1">Erste Klasse</option>
-						<option value="2">Zweite Klasse</option>
+						<option className="text-black" value="1">Erste Klasse</option>
+						<option className="text-black" value="2">Zweite Klasse</option>
 					</select>
 				</div>
 
