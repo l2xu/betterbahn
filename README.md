@@ -18,7 +18,7 @@ This is not an official repository or project of Deutsche Bahn AG. It is an inde
 - [pnpm](https://pnpm.io/) (see below for installation)
 - [git](https://git-scm.com/)
 
-To run the project locally:
+### To run the project locally
 
 1. Clone the repository and navigate to the folder
 
