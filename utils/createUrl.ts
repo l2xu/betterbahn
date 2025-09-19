@@ -42,7 +42,6 @@ function createStationId(station: Station): string {
 		L: station.id,
 		B: "1",
 		p: "1750104613",
-		i: `U×${String(station.id).padStart(9, "0")}`,
 	})
 		.map(([k, v]) => `${k}=${v}`)
 		.join("@");
