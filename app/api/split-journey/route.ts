@@ -39,7 +39,20 @@ const handler = async (request: Request) => {
 	// Split-Kandidaten aus vorhandenen Legs ableiten (keine zusätzlichen API Calls)
 	const splitPoints = extractSplitPoints(originalJourney);
 
+	// Falls es keine potenziellen Split-Stationen gibt:
+	// - Bei Streaming (SSE) trotzdem einen Stream zurückgeben, der sofort "complete" sendet.
+	// - Ansonsten als JSON antworten.
 	if (splitPoints.length === 0) {
+		if (useStreaming) {
+			return handleStreamingResponse(
+				originalJourney,
+				splitPoints,
+				bahnCard,
+				hasDeutschlandTicket,
+				passengerAge,
+				travelClass
+			);
+		}
 		return Response.json({
 			success: true,
 			splitOptions: [],
@@ -427,7 +440,8 @@ function handleStreamingResponse(
 	splitPoints: SplitPoint[],
 	bahnCard: string,
 	hasDeutschlandTicket: boolean,
-	passengerAge: string,
+	// Alter: vom Client kann number|null kommen
+	passengerAge: number | null,
 	travelClass: string
 ) {
 	const encoder = new TextEncoder();
@@ -456,7 +470,20 @@ function handleStreamingResponse(
 					encoder.encode(`data: ${JSON.stringify(initialData)}\n\n`)
 				);
 
-				// Find split options with progress updates
+				// Sonderfall: Keine Split-Stationen -> sofort "complete" senden
+				if (splitPoints.length === 0) {
+					const finalData = {
+						type: "complete",
+						success: true,
+						splitOptions: [],
+						originalPrice,
+					};
+					controller.enqueue(encoder.encode(`data: ${JSON.stringify(finalData)}\n\n`));
+					// Wichtig: Nicht hier schließen, das erledigt der finally-Block (verhindert Doppel-Schließen-Fehler)
+					return;
+				}
+
+				// Normale Analyse mit Fortschritt
 				const splitOptions = await analyzeSplitPoints(
 					originalJourney,
 					splitPoints,
@@ -501,7 +528,12 @@ function handleStreamingResponse(
 					encoder.encode(`data: ${JSON.stringify(errorData)}\n\n`)
 				);
 			} finally {
-				controller.close();
+				// Stream am Ende sicher schließen (Doppel-Schließen ignorieren z.B. bei Fehlern oder Abbrüchen des Clients)
+				try {
+					controller.close();
+				} catch {
+					// noop
+				}
 			}
 		},
 	});
