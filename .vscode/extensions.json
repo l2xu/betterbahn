@@ -2,6 +2,7 @@
 	"recommendations": [
 		"oxc.oxc-vscode",
 		"esbenp.prettier-vscode",
-		"bradlc.vscode-tailwindcss"
+		"bradlc.vscode-tailwindcss",
+		"davidanson.vscode-markdownlint"
 	]
 }
