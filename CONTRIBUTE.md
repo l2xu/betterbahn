@@ -9,9 +9,7 @@ We are thrilled that you're interested in contributing to BetterBahn! Every cont
   * [Reporting Bugs](#reporting-bugs)
   * [Suggesting New Features](#suggesting-new-features)
   * [Submitting Your First Pull Request](#submitting-your-first-pull-request)
-* [Style Guides](#style-guides)
-  * [Git Commit Messages](#git-commit-messages)
-  * [Code Style](#code-style)
+* [Git Commit Messages](#git-commit-messages)
 
 ## Code of Conduct
 
