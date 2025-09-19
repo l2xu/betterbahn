@@ -26,7 +26,7 @@ To run the project locally:
 
    You can install pnpm via corepack (included with Node.js):
 
-   ```bash
+   ```shell
    corepack enable
    corepack prepare pnpm@latest --activate
    ```

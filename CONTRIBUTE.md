@@ -48,13 +48,13 @@ Code contributions are the heart of an open-source project. Here is the basic wo
 2. **Fork the repository:** Click the "Fork" button in the top-right corner of the project's GitHub page.
 3. **Clone your fork locally:**
 
-    ```bash
+    ```shell
     git clone [https://github.com/YOUR-USERNAME/](https://github.com/YOUR-USERNAME/)betterbahn.git
     ```
 
 4. **Create a new branch:** Choose a descriptive name for your branch (e.g., `feature/new-login-feature` or `fix/calculation-bug`).
 
-    ```bash
+    ```shell
     git checkout -b feature/descriptive-name
     ```
 
@@ -62,21 +62,21 @@ Code contributions are the heart of an open-source project. Here is the basic wo
 6. **Add tests:** If you are adding a new feature, please include corresponding unit or integration tests.
 7. **Run the tests (Not implemented yet!):** Ensure that all tests pass successfully.
 
-    ```bash
+    ```shell
     # Example command, adapt it for your project
     pnpm test
     ```
 
 8. **Commit your changes:** Write a clear and concise commit message (see [Style Guides](#git-commit-messages)).
 
-    ```bash
+    ```shell
     git add .
     git commit -m "feat: Add new login feature (closes #123)"
     ```
 
 9. **Push your changes to your fork:**
 
-    ```bash
+    ```shell
     git push origin feature/descriptive-name
     ```
 

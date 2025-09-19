@@ -17,9 +17,11 @@ Diese Anleitung hilft Ihnen, BetterBahn auf Windows mit Docker Desktop zu instal
 
 2. **Docker Compose-Datei herunterladen**:
    - Im Eingabeaufforderungsfenster geben Sie den folgenden Befehl ein und drücken Enter:
-     ```
+
+     ```shell
      curl -o docker-compose.yaml https://raw.githubusercontent.com/l2xu/betterbahn/main/docker-compose/docker-compose.yaml
      ```
+
      Dies lädt die Datei in Ihr aktuelles Verzeichnis herunter (normalerweise Ihr Benutzerordner).
    - Falls curl nicht funktioniert, können Sie sie manuell herunterladen:
      - Öffnen Sie Ihren Webbrowser und gehen Sie zu [https://raw.githubusercontent.com/l2xu/betterbahn/main/docker-compose/docker-compose.yaml](https://raw.githubusercontent.com/l2xu/betterbahn/main/docker-compose/docker-compose.yaml).
@@ -28,17 +30,21 @@ Diese Anleitung hilft Ihnen, BetterBahn auf Windows mit Docker Desktop zu instal
 3. **In den Ordner navigieren (falls manuell heruntergeladen)**:
    - Falls Sie die Datei in einen bestimmten Ordner heruntergeladen haben, müssen Sie in der Eingabeaufforderung dorthin gehen.
    - Zum Beispiel, falls sie auf Ihrem Desktop ist, geben Sie ein:
-     ```
+
+     ```shell
      cd Desktop
      ```
+
      und drücken Enter.
    - Um zu sehen, was im aktuellen Ordner ist, geben Sie `dir` ein und drücken Enter.
 
 4. **Anwendung ausführen**:
    - In der Eingabeaufforderung geben Sie ein:
-     ```
+
+     ```shell
      docker compose up -d
      ```
+
      und drücken Enter.
    - Dieser Befehl lädt das erforderliche Docker-Image herunter und startet die Anwendung im Hintergrund. Beim ersten Mal kann es einige Minuten dauern.
 
@@ -49,9 +55,11 @@ Diese Anleitung hilft Ihnen, BetterBahn auf Windows mit Docker Desktop zu instal
 
 6. **Anwendung stoppen (falls erforderlich)**:
    - Um die Anwendung zu stoppen, gehen Sie zurück zur Eingabeaufforderung und geben ein:
-     ```
+
+     ```shell
      docker compose down
      ```
+
      und drücken Enter.
 
 ## Fehlerbehebung
