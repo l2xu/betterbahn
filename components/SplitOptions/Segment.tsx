@@ -67,9 +67,8 @@ export const Segment = ({
 						</span>
 					) : hasUnknownPrice ? (
 						<span
-							className={`text-xs font-medium ${
-								segmentHasFlixTrain ? "text-purple-600" : "text-orange-600"
-							}`}
+							className={`text-xs font-medium ${segmentHasFlixTrain ? "text-purple-600" : "text-orange-600"
+								}`}
 						>
 							{segmentHasFlixTrain ? "FlixTrain" : "Preis unbekannt"}
 						</span>
@@ -94,7 +93,7 @@ export const Segment = ({
 							alert("Failed to generate booking URL.");
 						}
 					}}
-					className="mt-1 px-3 py-1 bg-green-600 text-foreground text-xs rounded-md "
+					className="mt-1 px-3 py-1 bg-green-600 hover:bg-green-700 hover:cursor-pointer text-foreground text-xs rounded-md "
 				>
 					Zur Buchung
 				</button>
