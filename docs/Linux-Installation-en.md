@@ -17,9 +17,11 @@ This guide will help you install and run BetterBahn on Linux using Docker. We'll
 
 2. **Download the Docker Compose File**:
    - In the terminal, type the following command and press Enter:
-     ```
+
+     ```shell
      curl -o docker-compose.yaml https://raw.githubusercontent.com/l2xu/betterbahn/main/docker-compose/docker-compose.yaml
      ```
+
      This will download the file to your current directory (usually your home folder).
    - If curl is not installed, you can install it with `sudo apt install curl` (on Ubuntu/Debian) or equivalent for your distribution.
    - Alternatively, download it manually:
@@ -29,17 +31,21 @@ This guide will help you install and run BetterBahn on Linux using Docker. We'll
 3. **Navigate to the Folder (if downloaded manually)**:
    - If you downloaded the file to a specific folder, you need to go to that folder in the terminal.
    - For example, if it's in your Downloads folder, type:
-     ```
+
+     ```shell
      cd Downloads
      ```
+
      and press Enter.
    - To see what's in the current folder, type `ls` and press Enter.
 
 4. **Run the Application**:
    - In the terminal, type:
-     ```
+
+     ```shell
      docker compose up -d
      ```
+
      and press Enter.
    - You might need to run it with sudo: `sudo docker compose up -d`
    - This command will pull the necessary Docker image and start the application in the background. It might take a few minutes the first time.
@@ -51,9 +57,11 @@ This guide will help you install and run BetterBahn on Linux using Docker. We'll
 
 6. **Stop the Application (when needed)**:
    - To stop the application, go back to the terminal and type:
-     ```
+
+     ```shell
      docker compose down
      ```
+
      (or `sudo docker compose down`)
      and press Enter.
 
