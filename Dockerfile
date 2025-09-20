@@ -44,6 +44,7 @@ USER node
 
 # Expose port and add healthcheck
 EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost:3000 || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=5 \
+    CMD IP=$(hostname -i | awk '{print $1}'); curl -fsS -4 "http://$IP:${PORT:-3000}" || exit 1
 
 CMD ["node", "server.js"]
