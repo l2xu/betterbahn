@@ -40,7 +40,7 @@ function Discount() {
 			try {
 				const urlFromParams = searchParams.get("url");
 				if (!urlFromParams) {
-					throw new Error("No URL provided for parsing.");
+					throw new Error("Keine URL zum Parsen angegeben.");
 				}
 
 				// Parse URL
@@ -188,7 +188,7 @@ function Discount() {
 
 export default function DiscountPage() {
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
+		<Suspense fallback={<div>Laden...</div>}>
 			<Discount />
 		</Suspense>
 	);
