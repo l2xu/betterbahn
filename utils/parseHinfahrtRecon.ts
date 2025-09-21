@@ -116,7 +116,7 @@ export const parseHinfahrtReconWithAPI = async (
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"Cookie": cookies.join(" "),
+			"Cookie": cookies.join(";"),
 		},
 		body: {
 			klasse: "KLASSE_2",
