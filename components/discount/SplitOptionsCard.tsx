@@ -29,23 +29,21 @@ export function SplitOptionsCard({
 	const renderContent = () => {
 		if (status === STATUS.SELECTING) {
 			return (
-				<p className="text-text-secondary">
+				<p className="">
 					Bitte wählen Sie eine Verbindung aus der Liste links aus.
 				</p>
 			);
 		}
 
 		if (!selectedJourney) {
-			return (
-				<p className="text-text-secondary">Keine Verbindung ausgewählt.</p>
-			);
+			return <p className="">Keine Verbindung ausgewählt.</p>;
 		}
 
 		if (!splitOptions || status === STATUS.ANALYZING) {
 			return (
 				<div className="flex items-center justify-center py-8">
 					<div className="inline-block animate-spin rounded-full h-6 w-6 border-2 border-blue-600 border-b-transparent mr-3" />
-					<span className="text-text-secondary">Analysiere Optionen...</span>
+					<span className="">Analysiere Optionen...</span>
 				</div>
 			);
 		}
@@ -65,11 +63,11 @@ export function SplitOptionsCard({
 
 		return (
 			<div className="bg-background border border-card-border rounded-lg p-4 text-center">
-				<p className="text-text-secondary">
+				<p className="">
 					Für diese Verbindung konnten keine günstigeren Split-Ticket Optionen
 					gefunden werden.
 				</p>
-				<p className="text-sm text-text-muted mt-2">
+				<p className="text-sm mt-2">
 					Das ursprüngliche Ticket ist bereits die beste Option.
 				</p>
 			</div>
@@ -78,9 +76,7 @@ export function SplitOptionsCard({
 
 	return (
 		<div className="space-y-6">
-			<h3 className="font-semibold text-lg text-text-primary">
-				Split-Ticket Optionen
-			</h3>
+			<h3 className="font-semibold text-lg ">Split-Ticket Optionen</h3>
 			{renderContent()}
 		</div>
 	);

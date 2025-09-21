@@ -1,5 +1,10 @@
 import { isLegCoveredByDeutschlandTicket } from "@/utils/deutschlandTicketUtils";
-import { formatPriceWithTwoDecimals, formatTime, formatDuration, getChangesCount } from "@/utils/formatUtils";
+import {
+	formatPriceWithTwoDecimals,
+	formatTime,
+	formatDuration,
+	getChangesCount,
+} from "@/utils/formatUtils";
 import type { ExtractedData } from "@/utils/types";
 import type { VendoJourney } from "@/utils/schemas";
 import { JourneyIcon } from "./JourneyIcon";
@@ -45,26 +50,26 @@ export function OriginalJourneyCard({
 						{/* Departure */}
 						<div className="flex justify-between items-start">
 							<div>
-								<span className="font-bold text-xl text-text-primary">
+								<span className="font-bold text-xl ">
 									{selectedJourney.legs?.[0]
 										? formatTime(selectedJourney.legs[0].departure)
 										: extractedData.time || ""}
 								</span>
-								<span className="ml-3 text-lg text-text-primary">
+								<span className="ml-3 text-lg ">
 									{extractedData.fromStation}
 								</span>
 							</div>
 							<div className="text-right">
 								<div className="font-bold text-lg text-red-600">Original</div>
-								<div className="text-xl font-bold text-text-primary">
-									{priceDisplay}
-								</div>
+								<div className="text-xl font-bold ">{priceDisplay}</div>
 							</div>
 						</div>
 
 						{/* Journey details */}
 						<JourneyInfoRow>
-							<span>{formatDuration(selectedJourney) || "Dauer unbekannt"}</span>
+							<span>
+								{formatDuration(selectedJourney) || "Dauer unbekannt"}
+							</span>
 							<span className="">·</span>
 							<span>
 								{getChangesCount(selectedJourney)} Zwischenstopp
@@ -78,7 +83,7 @@ export function OriginalJourneyCard({
 						{/* Arrival */}
 						<div className="flex justify-between items-start mt-2">
 							<div>
-								<span className="font-bold text-xl text-text-primary">
+								<span className="font-bold text-xl">
 									{selectedJourney.legs?.[selectedJourney.legs.length - 1]
 										? formatTime(
 												selectedJourney.legs[selectedJourney.legs.length - 1]
@@ -86,9 +91,7 @@ export function OriginalJourneyCard({
 										  )
 										: ""}
 								</span>
-								<span className="ml-3 text-lg text-text-primary">
-									{extractedData.toStation}
-								</span>
+								<span className="ml-3 text-lg ">{extractedData.toStation}</span>
 							</div>
 						</div>
 					</div>
@@ -98,14 +101,12 @@ export function OriginalJourneyCard({
 				<div className="mt-4 pt-4 border-t border-card-border">
 					<div className="grid grid-cols-2 gap-4 text-sm">
 						<div>
-							<p className="text-text-secondary">Klasse</p>
-							<p className="text-text-primary">
-								{extractedData.travelClass || "2"}. Klasse
-							</p>
+							<p className="">Klasse</p>
+							<p className="">{extractedData.travelClass || "2"}. Klasse</p>
 						</div>
 						<div>
-							<p className="text-text-secondary">BahnCard</p>
-							<p className="text-text-primary">
+							<p className="">BahnCard</p>
+							<p className="">
 								{extractedData.bahnCard === "none"
 									? "Keine"
 									: `BahnCard ${extractedData.bahnCard}`}
@@ -115,16 +116,14 @@ export function OriginalJourneyCard({
 
 					{extractedData.hasDeutschlandTicket && (
 						<div className="mt-2">
-							<p className="text-text-secondary text-sm">Deutschland-Ticket</p>
+							<p className=" text-sm">Deutschland-Ticket</p>
 							<p className="text-green-600 font-medium">✓ Vorhanden</p>
 						</div>
 					)}
 
 					{selectedJourney.price?.hint && (
 						<div className="mt-2">
-							<p className="text-xs text-text-muted">
-								{selectedJourney.price.hint}
-							</p>
+							<p className="text-xs ">{selectedJourney.price.hint}</p>
 						</div>
 					)}
 				</div>
@@ -134,15 +133,11 @@ export function OriginalJourneyCard({
 
 	return (
 		<div className="space-y-6">
-			<h3 className="font-semibold text-lg text-text-primary">
-				Deine Verbindung
-			</h3>
+			<h3 className="font-semibold text-lg ">Deine Verbindung</h3>
 			{selectedJourney ? (
 				renderSelectedJourney()
 			) : (
-				<div className="text-center text-text-secondary py-4">
-					Deine Verbindung wird geladen...
-				</div>
+				<div className="text-center py-4">Deine Verbindung wird geladen...</div>
 			)}
 		</div>
 	);
