@@ -22,13 +22,10 @@ export const setRandomUserAgent = async (page: Page): Promise<UserAgent> => {
 	const { userAgent, platform, viewportWidth, viewportHeight } =
 		randomUserAgent.data;
 
-	// Set the user agent with proper options
 	await page.setUserAgent({
 		userAgent,
 		platform,
 	});
-
-	// Set viewport size based on the user agent data
 	await page.setViewport({
 		width: viewportWidth,
 		height: viewportHeight,
@@ -45,9 +42,11 @@ export const setupBrowserAndPage = async (): Promise<[Browser, Page]> => {
 	const browser = await puppeteer.launch();
 	const page = await browser.newPage();
 	const randomUserAgent = await setRandomUserAgent(page);
+
 	console.log(
 		`🌐 Browser was setup with user agent "${randomUserAgent.data.userAgent}", platform "${randomUserAgent.data.platform}" and viewport ${randomUserAgent.data.viewportWidth}x${randomUserAgent.data.viewportHeight}.`
 	);
+
 	return [browser, page];
 };
 
