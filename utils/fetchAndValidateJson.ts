@@ -1,4 +1,4 @@
-import z, { type ZodType, prettifyError } from "zod/v4";
+import z, { type ZodType } from "zod/v4";
 import { validateJson } from "./validateJson";
 
 export const fetchAndValidateJson = async <
