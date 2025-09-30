@@ -58,7 +58,7 @@ export const setupBrowserAndPage = async (): Promise<[Browser, Page]> => {
  * @param timeout - Timeout in milliseconds (default: 15000).
  * @returns The validated response data.
  */
-export const interceptResponse = async <T extends ZodType>(
+export const interceptResponse = <T extends ZodType>(
 	page: Page,
 	schema: T,
 	pathname: string,
