@@ -15,6 +15,9 @@
     "db-hafas-stations": "^2.0.0",
     "db-vendo-client": "^6.8.2",
     "next": "15.5.4",
+    "puppeteer": "^24.22.3",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "user-agents": "^1.1.665"
@@ -24,6 +27,7 @@
     "@types/node": "24.6.0",
     "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.8",
+    "@types/user-agents": "^1.0.4",
     "oxlint": "^1.19.0",
     "tailwindcss": "^4",
     "typescript": "^5.9.2",
