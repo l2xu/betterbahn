@@ -2,11 +2,11 @@ name: Docker
 
 on:
   push:
-    branches: [ "**" ]
+    branches: ["**"]
     # Publish semver tags as releases.
-    tags: [ 'v*.*' ]
+    tags: ["v*.*"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -14,10 +14,8 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read

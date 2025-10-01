@@ -2,9 +2,8 @@
 name: Feature Request
 about: Suggest an idea for this project
 title: "[FEAT] A brief, descriptive title"
-labels: 'enhancement, needs-triage'
-assignees: ''
-
+labels: "enhancement, needs-triage"
+assignees: ""
 ---
 
 **Is your feature request related to a problem? Please describe.**

@@ -1,33 +1,35 @@
 {
-  "name": "db_ticket",
-  "version": "0.1.0",
-  "private": true,
-  "license": "AGPL-3.0-only",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "deploy": "docker build",
-    "oxlint": "oxlint"
-  },
-  "dependencies": {
-    "db-hafas-stations": "^2.0.0",
-    "db-vendo-client": "^6.8.2",
-    "next": "15.5.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "24.6.0",
-    "@types/react": "^19.1.11",
-    "@types/react-dom": "^19.1.8",
-    "oxlint": "^1.19.0",
-    "tailwindcss": "^4",
-    "typescript": "^5.9.2",
-    "zod": "^4.1.8"
-  },
+	"name": "db_ticket",
+	"version": "0.1.0",
+	"private": true,
+	"license": "AGPL-3.0-only",
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"format": "prettier --write .",
+		"deploy": "docker build",
+		"oxlint": "oxlint"
+	},
+	"dependencies": {
+		"db-hafas-stations": "^2.0.0",
+		"db-vendo-client": "^6.8.2",
+		"next": "15.5.4",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "^4",
+		"@types/node": "24.6.0",
+		"@types/react": "^19.1.11",
+		"@types/react-dom": "^19.1.8",
+		"oxlint": "^1.19.0",
+		"prettier": "^3.6.2",
+		"tailwindcss": "^4",
+		"typescript": "^5.9.2",
+		"zod": "^4.1.8"
+	},
 	"devEngines": {
 		"packageManager": {
 			"name": "pnpm",
@@ -35,5 +37,5 @@
 			"onFail": "download"
 		}
 	},
-  "packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b"
+	"packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b"
 }

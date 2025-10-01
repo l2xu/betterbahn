@@ -3,13 +3,13 @@ declare module "db-vendo-client" {
 		journeys(
 			from: string,
 			to: string,
-			options: SearchJourneysOptions
+			options: SearchJourneysOptions,
 		): Promise<unknown>;
 	}
 
 	export function createClient(
 		dbProfile: unknown,
-		userAgent: string
+		userAgent: string,
 	): VendoClient;
 
 	export interface SearchJourneysOptions {

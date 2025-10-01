@@ -54,14 +54,17 @@ function createStationId(station: Station): string {
  * @param {string | null} bahnCard - Type of Bahncard ("25", "50", or null for none)
  * @returns {string} Encoded Bahncard parameter
  */
-function createBcParameter(travelClass: number, bahnCard: string | null): string {
+function createBcParameter(
+	travelClass: number,
+	bahnCard: string | null,
+): string {
 	switch (bahnCard) {
 		case "25":
-			return `13:17:KLASSE_${travelClass}:1`
+			return `13:17:KLASSE_${travelClass}:1`;
 		case "50":
-			return `13:23:KLASSE_${travelClass}:1`
+			return `13:23:KLASSE_${travelClass}:1`;
 		default:
-			return "13:16:KLASSENLOS:1"
+			return "13:16:KLASSENLOS:1";
 	}
 }
 
@@ -77,7 +80,7 @@ export function createSegmentSearchUrl(
 	segment: VendoJourney,
 	travelClass: number = 2,
 	hasDeutschlandTicket: boolean,
-	bahnCard: string | null
+	bahnCard: string | null,
 ): string {
 	if (!segment?.legs?.length)
 		throw new Error("Invalid segment: missing legs data");
@@ -85,14 +88,20 @@ export function createSegmentSearchUrl(
 	const firstLeg = legs[0];
 	const lastLeg = legs[legs.length - 1];
 	const cleanDate = formatDate(firstLeg.departure);
-	const bcParameter = createBcParameter(travelClass, bahnCard)
+	const bcParameter = createBcParameter(travelClass, bahnCard);
 
 	// Modern URL building with proper validation
 
 	// Properly validate required data with explicit checks for optional properties
-	if (!firstLeg?.origin || !firstLeg.origin.name || 
-		!lastLeg?.destination || !lastLeg.destination.name) {
-		throw new Error('Missing origin, destination, or station names in journey legs');
+	if (
+		!firstLeg?.origin ||
+		!firstLeg.origin.name ||
+		!lastLeg?.destination ||
+		!lastLeg.destination.name
+	) {
+		throw new Error(
+			"Missing origin, destination, or station names in journey legs",
+		);
 	}
 
 	const parts = [
@@ -127,7 +136,7 @@ export function createSegmentSearchUrl(
 		"fm=false",
 		"bp=false",
 		"dlt=false",
-		`dltv=${hasDeutschlandTicket}`
+		`dltv=${hasDeutschlandTicket}`,
 	);
 
 	return `https://www.bahn.de/buchung/fahrplan/suche#${parts.join("&")}`;
@@ -162,7 +171,7 @@ function shouldUseStationId(stationId: string, stationName: string) {
 		!stationName.toLowerCase().includes(problematicName.toLowerCase())
 	) {
 		console.warn(
-			`Skipping problematic station ID ${stationId} for ${stationName} (maps to ${problematicName})`
+			`Skipping problematic station ID ${stationId} for ${stationName} (maps to ${problematicName})`,
 		);
 		return false;
 	}
@@ -173,7 +182,11 @@ function addStationId(station: Station, type: string, parts: string[]) {
 	const stationId =
 		station.id || station.stationId || station.uicCode || station.evaId;
 
-	if (stationId && station.name && shouldUseStationId(stationId, station.name)) {
+	if (
+		stationId &&
+		station.name &&
+		shouldUseStationId(stationId, station.name)
+	) {
 		const stationData = createStationId({
 			name: station.name,
 			id: stationId,
@@ -186,4 +199,3 @@ function addStationId(station: Station, type: string, parts: string[]) {
 
 	return null;
 }
-

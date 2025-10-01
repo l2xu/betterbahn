@@ -15,7 +15,7 @@ export const isValidDBBookingUrl = (url: string) => {
 		const commonParams = ["ot", "rt", "dt", "so", "zo"];
 
 		const hasRequiredParams = requiredParams.some((param) =>
-			urlObj.searchParams.has(param)
+			urlObj.searchParams.has(param),
 		);
 
 		if (!hasRequiredParams) {

@@ -22,7 +22,7 @@ export const calculateTransferTimeInMinutes = (leg: VendoLeg) => {
 	if (!leg.walking || !leg.departure || !leg.arrival) return 0;
 	return Math.round(
 		(new Date(leg.arrival).getTime() - new Date(leg.departure).getTime()) /
-			60000
+			60000,
 	);
 };
 
@@ -35,7 +35,9 @@ export const getJourneyLegsWithTransfers = (journey: VendoJourney) => {
 			if (leg.walking) return null;
 			const next = legs[i + 1];
 			return Object.assign({}, leg, {
-				transferTimeAfter: next?.walking ? calculateTransferTimeInMinutes(next) : 0,
+				transferTimeAfter: next?.walking
+					? calculateTransferTimeInMinutes(next)
+					: 0,
 			});
 		})
 		.filter(Boolean) as (VendoLeg & { transferTimeAfter: number })[];
@@ -50,7 +52,7 @@ export const getJourneyLegsWithTransfers = (journey: VendoJourney) => {
  * @throws {Error} When API call fails or returns error
  */
 export const searchForJourneys = async (
-	extractedData: ExtractedData
+	extractedData: ExtractedData,
 ): Promise<VendoJourney[]> => {
 	const {
 		fromStationId,
@@ -66,7 +68,7 @@ export const searchForJourneys = async (
 	// Validate required fields
 	if (!fromStationId || !toStationId) {
 		throw new Error(
-			"Unvollständige Reisedaten: Start- und Zielbahnhof erforderlich"
+			"Unvollständige Reisedaten: Start- und Zielbahnhof erforderlich",
 		);
 	}
 
@@ -100,7 +102,7 @@ export const searchForJourneys = async (
 
 	try {
 		const response = await fetch(`/api/journeys?${urlParams}`);
-		
+
 		if (!response.ok) {
 			let errorMessage = "Fehler beim Laden der Verbindungen";
 			try {
@@ -121,7 +123,7 @@ export const searchForJourneys = async (
 		// Re-throw with more user-friendly message if it's a network error
 		if (typedError.message.includes("fetch")) {
 			throw new Error(
-				"Netzwerkfehler: Bitte überprüfe deine Internetverbindung"
+				"Netzwerkfehler: Bitte überprüfe deine Internetverbindung",
 			);
 		}
 		throw error;

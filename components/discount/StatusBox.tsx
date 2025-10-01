@@ -6,7 +6,11 @@ interface StatusBoxProps {
 	progressInfo?: ProgressInfo;
 }
 
-export function StatusBox({ message, isLoading, progressInfo }: StatusBoxProps) {
+export function StatusBox({
+	message,
+	isLoading,
+	progressInfo,
+}: StatusBoxProps) {
 	return (
 		<div className="w-full mb-6">
 			<div className="bg-primary text-white rounded-lg p-3 flex flex-col items-center justify-center py-8">

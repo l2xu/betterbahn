@@ -107,10 +107,10 @@ export const isICRouteCoveredByDeutschlandTicket = (leg: VendoLeg) => {
 	return deutschlandTicketICRoutes.some((route) => {
 		const stationsLower = route.stations.map((s) => s.toLowerCase());
 		const originOnRoute = stationsLower.some(
-			(s) => originName.includes(s) || s.includes(originName)
+			(s) => originName.includes(s) || s.includes(originName),
 		);
 		const destinationOnRoute = stationsLower.some(
-			(s) => destinationName.includes(s) || s.includes(destinationName)
+			(s) => destinationName.includes(s) || s.includes(destinationName),
 		);
 		if (!originOnRoute || !destinationOnRoute) return false;
 
@@ -133,7 +133,10 @@ export const legIsFlixTrain = (leg: VendoLeg) => {
 	return /FLX|FLIXTRAIN/.test(name + product);
 };
 
-export const isLegCoveredByDeutschlandTicket = (leg: VendoLeg, hasDeutschlandTicket: boolean) => {
+export const isLegCoveredByDeutschlandTicket = (
+	leg: VendoLeg,
+	hasDeutschlandTicket: boolean,
+) => {
 	if (!hasDeutschlandTicket) return false;
 	if (leg.walking) return true;
 	if (!leg.line || legIsFlixTrain(leg)) return false; // FlixTrains never covered

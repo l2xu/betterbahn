@@ -38,10 +38,10 @@ const loadSettingsFromLocalStorage = () => {
 	const storageBahnCard = localStorage.getItem("betterbahn/settings/bahnCard");
 	const storageAge = localStorage.getItem("betterbahn/settings/passengerAge");
 	const storageDTicket = localStorage.getItem(
-		"betterbahn/settings/hasDeutschlandTicket"
+		"betterbahn/settings/hasDeutschlandTicket",
 	);
 	const storageTravelClass = localStorage.getItem(
-		"betterbahn/settings/travelClass"
+		"betterbahn/settings/travelClass",
 	);
 
 	const updates: Partial<FormState> = {};
@@ -73,19 +73,19 @@ const updateLocalStorage = (updates: Updates) => {
 	if (updates.hasDeutschlandTicket !== null) {
 		localStorage.setItem(
 			"betterbahn/settings/hasDeutschlandTicket",
-			String(updates.hasDeutschlandTicket)
+			String(updates.hasDeutschlandTicket),
 		);
 	}
 	if (updates.passengerAge !== null) {
 		localStorage.setItem(
 			"betterbahn/settings/passengerAge",
-			String(updates.passengerAge || '')
+			String(updates.passengerAge || ""),
 		);
 	}
-	if(updates.travelClass !== undefined) {
+	if (updates.travelClass !== undefined) {
 		localStorage.setItem(
 			"betterbahn/settings/travelClass",
-			updates.travelClass
+			updates.travelClass,
 		);
 	}
 };

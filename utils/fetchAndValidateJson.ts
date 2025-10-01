@@ -2,7 +2,7 @@ import { type ZodType, prettifyError } from "zod/v4";
 
 export const fetchAndValidateJson = async <
 	T extends ZodType,
-	Method extends "GET" | "POST"
+	Method extends "GET" | "POST",
 >({
 	url,
 	method,
@@ -53,8 +53,8 @@ export const fetchAndValidateJson = async <
 	if (!validationResult.success) {
 		throw new Error(
 			`Validation of fetch ${url} failed: ${prettifyError(
-				validationResult.error
-			)}`
+				validationResult.error,
+			)}`,
 		);
 	}
 

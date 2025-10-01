@@ -12,12 +12,12 @@ const handler = async (request: Request) => {
 	if (!url) {
 		return Response.json(
 			{ error: "Missing required parameter: url" },
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 
 	const journeyDetails = extractJourneyDetails(
-		await getResolvedUrlBrowserless(url)
+		await getResolvedUrlBrowserless(url),
 	);
 
 	if ("error" in journeyDetails) {
@@ -27,7 +27,7 @@ const handler = async (request: Request) => {
 	if (!journeyDetails.fromStationId || !journeyDetails.toStationId) {
 		return Response.json(
 			{ error: "journeyDetails is missing fromStationId or toStationId" },
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 
@@ -173,11 +173,11 @@ async function getResolvedUrlBrowserless(url: string) {
 
 	// Find first segment with halte data for start station
 	const firstSegmentWithHalte = data.verbindungen[0].verbindungsAbschnitte.find(
-		(segment) => segment.halte.length > 0
+		(segment) => segment.halte.length > 0,
 	);
 	const lastSegmentWithHalte =
 		data.verbindungen[0].verbindungsAbschnitte.findLast(
-			(segment) => segment.halte.length > 0
+			(segment) => segment.halte.length > 0,
 		);
 
 	if (!firstSegmentWithHalte || !lastSegmentWithHalte) {
