@@ -26,7 +26,7 @@ export const parseHinfahrtRecon = (hinfahrtRecon: string) => {
 
 	if (!scGzipBase64WithPrefix.startsWith("1_")) {
 		throw new Error(
-			"Can't process vbid: hinfahrtRecon 'SC' unexpectedly doesn't start with '1_'"
+			"Can't process vbid: hinfahrtRecon 'SC' unexpectedly doesn't start with '1_'",
 		);
 	}
 
@@ -39,7 +39,7 @@ export const parseHinfahrtRecon = (hinfahrtRecon: string) => {
 		scJsonString = zlib.gunzipSync(scGzipBuffer).toString("utf-8");
 	} catch {
 		throw new Error(
-			"Can't process vbid: hinfahrtRecon 'SC' failed to get gunzipped"
+			"Can't process vbid: hinfahrtRecon 'SC' failed to get gunzipped",
 		);
 	}
 
@@ -49,7 +49,7 @@ export const parseHinfahrtRecon = (hinfahrtRecon: string) => {
 		scUnvalidatedJson = JSON.parse(scJsonString);
 	} catch {
 		throw new Error(
-			"Can't process vbid: hinfahrtRecon 'SC' JSON parsing failed (invalid JSON)"
+			"Can't process vbid: hinfahrtRecon 'SC' JSON parsing failed (invalid JSON)",
 		);
 	}
 
@@ -59,14 +59,14 @@ export const parseHinfahrtRecon = (hinfahrtRecon: string) => {
 				.array(
 					z.object({
 						lid: z.string(),
-					})
+					}),
 				)
 				.min(1),
 			depLoc: z
 				.array(
 					z.object({
 						lid: z.string(),
-					})
+					}),
 				)
 				.min(1),
 		}),
@@ -76,7 +76,7 @@ export const parseHinfahrtRecon = (hinfahrtRecon: string) => {
 
 	if (!scValidatedJsonResult.success) {
 		throw new Error(
-			"Can't process vbid: hinfahrtRecon 'SC' JSON doesn't match schema"
+			"Can't process vbid: hinfahrtRecon 'SC' JSON doesn't match schema",
 		);
 	}
 
@@ -91,7 +91,7 @@ const reconLegSchema = z.object({
 		.array(
 			z.object({
 				id: z.string(),
-			})
+			}),
 		)
 		.min(0), // Allow empty arrays for walking segments or transfers
 });
@@ -101,14 +101,14 @@ const reconResponseSchema = z.object({
 		.array(
 			z.object({
 				verbindungsAbschnitte: z.array(reconLegSchema).min(1),
-			})
+			}),
 		)
 		.min(1),
 });
 
 export const parseHinfahrtReconWithAPI = async (
 	vbidResponse: VbidSchema,
-	cookies: string[]
+	cookies: string[],
 ) => {
 	return await fetchAndValidateJson({
 		url: "https://www.bahn.de/web/api/angebote/recon",
@@ -116,7 +116,7 @@ export const parseHinfahrtReconWithAPI = async (
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"Cookie": cookies.join(" "),
+			Cookie: cookies.join(" "),
 		},
 		body: {
 			klasse: "KLASSE_2",

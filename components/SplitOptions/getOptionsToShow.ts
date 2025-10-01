@@ -6,11 +6,11 @@ import type { VendoJourney } from "@/utils/schemas";
 export const getOptionsToShow = ({
 	splitOptions,
 	hasDeutschlandTicket,
-	originalJourney
+	originalJourney,
 }: {
 	splitOptions: SplitOption[];
-	hasDeutschlandTicket: boolean
-	originalJourney: VendoJourney
+	hasDeutschlandTicket: boolean;
+	originalJourney: VendoJourney;
 }) => {
 	if (!splitOptions || splitOptions.length === 0) return [];
 
@@ -26,7 +26,7 @@ export const getOptionsToShow = ({
 
 	// Sort by savings (highest first)
 	const sortedOptions = optionsWithPricing.sort(
-		(a, b) => b.pricing.adjustedSavings - a.pricing.adjustedSavings
+		(a, b) => b.pricing.adjustedSavings - a.pricing.adjustedSavings,
 	);
 
 	// If user has Deutschland-Ticket, always show only the cheapest option

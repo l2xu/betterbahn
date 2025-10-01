@@ -25,7 +25,7 @@ const handler = async (request: Request) => {
 	if (!urlParams.from || !urlParams.to) {
 		return Response.json(
 			{ error: "Missing required parameters: from and to station IDs" },
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 
@@ -37,7 +37,7 @@ const handler = async (request: Request) => {
 		if (departureDate < now) {
 			return Response.json(
 				{ error: "Departure time cannot be in the past" },
-				{ status: 400 }
+				{ status: 400 },
 			);
 		}
 	}
@@ -47,7 +47,7 @@ const handler = async (request: Request) => {
 	// API-Zähler für Verbindungssuche erhöhen
 	incrementApiCount(
 		"JOURNEY_SEARCH",
-		`Searching journeys from ${urlParams.from} to ${urlParams.to}`
+		`Searching journeys from ${urlParams.from} to ${urlParams.to}`,
 	);
 
 	// Verbindungen von DB-API abrufen
@@ -62,12 +62,12 @@ const handler = async (request: Request) => {
 			{
 				success: false,
 				error: `Validation of 'journeys' on DB-API failed: ${prettifyError(
-					parseResult.error
+					parseResult.error,
 				)}`,
 			},
 			{
 				status: 500,
-			}
+			},
 		);
 	}
 
@@ -79,7 +79,7 @@ const handler = async (request: Request) => {
 	if (urlParams.departure && allJourneys.length > 0) {
 		const targetDepartureTime = new Date(urlParams.departure);
 		console.log(
-			`Filtering for exact matches to departure time: ${targetDepartureTime.toISOString()}`
+			`Filtering for exact matches to departure time: ${targetDepartureTime.toISOString()}`,
 		);
 
 		// Filter journeys that exactly match the search criteria
@@ -100,7 +100,7 @@ const handler = async (request: Request) => {
 			// Check if departure time matches (within 1 minute tolerance for exact time matching)
 			const journeyDeparture = new Date(firstLeg.departure);
 			const timeDifference = Math.abs(
-				journeyDeparture.getTime() - targetDepartureTime.getTime()
+				journeyDeparture.getTime() - targetDepartureTime.getTime(),
 			);
 
 			const timeMatches = timeDifference <= 60000; // 1 minute tolerance
@@ -109,7 +109,7 @@ const handler = async (request: Request) => {
 		});
 
 		console.log(
-			`Found ${exactMatches.length} exact matches out of ${allJourneys.length} total journeys`
+			`Found ${exactMatches.length} exact matches out of ${allJourneys.length} total journeys`,
 		);
 
 		if (exactMatches.length > 0) {
@@ -120,7 +120,7 @@ const handler = async (request: Request) => {
 						(leg) =>
 							`${leg.line?.name || "walk"}-${leg.origin?.id}-${
 								leg.destination?.id
-							}-${leg.departure}`
+							}-${leg.departure}`,
 					)
 					.join("|");
 
@@ -134,7 +134,7 @@ const handler = async (request: Request) => {
 								(leg) =>
 									`${leg.line?.name || "walk"}-${leg.origin?.id}-${
 										leg.destination?.id
-									}-${leg.departure}`
+									}-${leg.departure}`,
 							)
 							.join("|");
 						const jKey = `${jSignature}-${j.price?.amount || "no-price"}`;
@@ -165,7 +165,7 @@ const handler = async (request: Request) => {
 					(leg) =>
 						`${leg.line?.name || "walk"}-${leg.origin?.id}-${
 							leg.destination?.id
-						}-${leg.departure}`
+						}-${leg.departure}`,
 				)
 				.join("|");
 
@@ -178,7 +178,7 @@ const handler = async (request: Request) => {
 							(leg) =>
 								`${leg.line?.name || "walk"}-${leg.origin?.id}-${
 									leg.destination?.id
-								}-${leg.departure}`
+								}-${leg.departure}`,
 						)
 						.join("|");
 					const jKey = `${jSignature}-${j.price?.amount || "no-price"}`;
@@ -191,7 +191,7 @@ const handler = async (request: Request) => {
 		uniqueJourneys.sort(
 			(a, b) =>
 				new Date(a.legs[0].departure).getTime() -
-				new Date(b.legs[0].departure).getTime()
+				new Date(b.legs[0].departure).getTime(),
 		);
 
 		allJourneys = uniqueJourneys;
@@ -200,12 +200,12 @@ const handler = async (request: Request) => {
 
 	if (urlParams.hasDeutschlandTicket) {
 		console.log(
-			"Deutschland-Ticket enabled - all journeys should be visible with accurate pricing"
+			"Deutschland-Ticket enabled - all journeys should be visible with accurate pricing",
 		);
 	}
 
 	console.log(
-		`\n✅ JOURNEY SEARCH COMPLETED - Total API calls: ${getApiCount()}\n`
+		`\n✅ JOURNEY SEARCH COMPLETED - Total API calls: ${getApiCount()}\n`,
 	);
 
 	return Response.json({

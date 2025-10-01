@@ -4,7 +4,7 @@ const formatLegDuration = (duration: unknown) => {
 	if (!duration) return null;
 
 	// Handle string duration (ISO 8601 format like PT1H30M)
-	if (typeof duration === 'string') {
+	if (typeof duration === "string") {
 		const match = duration.match(/PT(\d+H)?(\d+M)?/);
 		if (match) {
 			const hours = match[1] ? match[1].replace("H", "") : "0";
@@ -14,7 +14,12 @@ const formatLegDuration = (duration: unknown) => {
 	}
 
 	// Handle duration object with departure/arrival times
-	if (typeof duration === "object" && duration && 'departure' in duration && 'arrival' in duration) {
+	if (
+		typeof duration === "object" &&
+		duration &&
+		"departure" in duration &&
+		"arrival" in duration
+	) {
 		try {
 			const dep = new Date((duration as any).departure);
 			const arr = new Date((duration as any).arrival);

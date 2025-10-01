@@ -1,6 +1,5 @@
 import type { VendoLeg } from "@/utils/schemas";
 
-
 // Formatiert Datum für deutsche Anzeige
 export const formatDate = (dateString: string | undefined) => {
 	if (!dateString) {
@@ -24,16 +23,16 @@ export const TrainIdentifier = ({ leg }: { leg: VendoLeg }) => {
 	}
 
 	if (leg.line?.product) {
-		return leg.line.product
+		return leg.line.product;
 	}
 
 	if (leg.line?.mode && typeof leg.line.mode === "string") {
-		return leg.line.mode
+		return leg.line.mode;
 	}
 
 	if (leg.mode) {
-		return leg.mode
+		return leg.mode;
 	}
 
-	return "Train"
+	return "Train";
 };

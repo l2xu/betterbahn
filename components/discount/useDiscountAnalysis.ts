@@ -6,11 +6,17 @@ import type { ExtractedData, ProgressInfo, SplitOption } from "@/utils/types";
 export function useDiscountAnalysis() {
 	const [status, setStatus] = useState<Status>(STATUS.LOADING);
 	const [journeys, setJourneys] = useState<VendoJourney[]>([]);
-	const [extractedData, setExtractedData] = useState<ExtractedData | null>(null);
+	const [extractedData, setExtractedData] = useState<ExtractedData | null>(
+		null,
+	);
 	const [error, setError] = useState("");
-	const [selectedJourney, setSelectedJourney] = useState<VendoJourney | null>(null);
+	const [selectedJourney, setSelectedJourney] = useState<VendoJourney | null>(
+		null,
+	);
 	const [splitOptions, setSplitOptions] = useState<SplitOption[] | null>(null);
-	const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES.initial);
+	const [loadingMessage, setLoadingMessage] = useState(
+		LOADING_MESSAGES.initial,
+	);
 	const [progressInfo, setProgressInfo] = useState<ProgressInfo | null>(null);
 
 	const analyzeSplitOptions = useCallback(
@@ -79,7 +85,7 @@ export function useDiscountAnalysis() {
 									"Error parsing SSE data:",
 									parseError,
 									"Line:",
-									line
+									line,
 								);
 								// Continue processing other lines instead of failing completely
 							}
@@ -90,13 +96,13 @@ export function useDiscountAnalysis() {
 				const typedErr = err as { message?: string };
 				console.error("Error analyzing split options:", err);
 				setError(
-					typedErr.message || "Fehler bei der Analyse der Split-Optionen."
+					typedErr.message || "Fehler bei der Analyse der Split-Optionen.",
 				);
 				setStatus(STATUS.ERROR);
 				setProgressInfo(null);
 			}
 		},
-		[]
+		[],
 	);
 
 	const handleJourneySelect = useCallback(
@@ -111,7 +117,7 @@ export function useDiscountAnalysis() {
 				setStatus(STATUS.ERROR);
 			}
 		},
-		[extractedData, analyzeSplitOptions]
+		[extractedData, analyzeSplitOptions],
 	);
 
 	return {

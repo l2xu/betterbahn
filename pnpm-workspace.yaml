@@ -1,4 +1,4 @@
 onlyBuiltDependencies:
-  - '@tailwindcss/oxide'
+  - "@tailwindcss/oxide"
   - puppeteer
   - sharp

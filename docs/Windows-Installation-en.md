@@ -23,6 +23,7 @@ This guide will help you install and run BetterBahn on Windows using Docker Desk
      ```
 
      This will download the file to your current directory (usually your user folder).
+
    - If curl doesn't work, you can download it manually:
      - Open your web browser and go to [https://raw.githubusercontent.com/l2xu/betterbahn/main/docker-compose/docker-compose.yaml](https://raw.githubusercontent.com/l2xu/betterbahn/main/docker-compose/docker-compose.yaml).
      - Right-click on the page and select "Save as..." to save the file as `docker-compose.yaml` in a folder you can easily find, like your Desktop or Documents.
@@ -36,6 +37,7 @@ This guide will help you install and run BetterBahn on Windows using Docker Desk
      ```
 
      and press Enter.
+
    - To see what's in the current folder, type `dir` and press Enter.
 
 4. **Run the Application**:
@@ -46,6 +48,7 @@ This guide will help you install and run BetterBahn on Windows using Docker Desk
      ```
 
      and press Enter.
+
    - This command will pull the necessary Docker image and start the application in the background. It might take a few minutes the first time.
 
 5. **Access the Application**:

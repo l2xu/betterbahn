@@ -1,4 +1,8 @@
-import { vendoJourneySchema, validatedVendoJourneySchema, type VendoJourney } from "@/utils/schemas";
+import {
+	vendoJourneySchema,
+	validatedVendoJourneySchema,
+	type VendoJourney,
+} from "@/utils/schemas";
 import type { ProgressInfo, SplitPoint, TrainLine } from "@/utils/types.js";
 import { createClient } from "db-vendo-client";
 import { data as loyaltyCards } from "db-vendo-client/format/loyalty-cards";
@@ -30,10 +34,14 @@ const handler = async (request: Request) => {
 	try {
 		validatedVendoJourneySchema.parse(originalJourney);
 	} catch (error) {
-		return Response.json({ 
-			error: "Invalid originalJourney: missing required station IDs or journey structure",
-			details: error instanceof z.ZodError ? error.issues : undefined
-		}, { status: 400 });
+		return Response.json(
+			{
+				error:
+					"Invalid originalJourney: missing required station IDs or journey structure",
+				details: error instanceof z.ZodError ? error.issues : undefined,
+			},
+			{ status: 400 },
+		);
 	}
 
 	// Split-Kandidaten aus vorhandenen Legs ableiten (keine zusätzlichen API Calls)
@@ -55,7 +63,7 @@ const handler = async (request: Request) => {
 			bahnCard,
 			hasDeutschlandTicket,
 			passengerAge,
-			travelClass
+			travelClass,
 		);
 	}
 
@@ -74,11 +82,11 @@ const handler = async (request: Request) => {
 		originalJourney,
 		splitPoints,
 		queryOptions,
-		originalPrice
+		originalPrice,
 	);
 
 	console.log(
-		`\n✅ SPLIT ANALYSIS COMPLETED - Total API calls: ${getApiCount()}\n`
+		`\n✅ SPLIT ANALYSIS COMPLETED - Total API calls: ${getApiCount()}\n`,
 	);
 
 	// Gibt die Ergebnisse als JSON zurück
@@ -169,15 +177,18 @@ function extractSplitPoints(journey: VendoJourney) {
 			}
 
 			if (s.arrival && s.departure && s.stop && !map.has(s.stop.id)) {
-				const trainLine: TrainLine | undefined = typeof leg.line === 'object' ? {
-					name: leg.line.name,
-					product: leg.line.product || leg.line.productName,
-				} : undefined;
+				const trainLine: TrainLine | undefined =
+					typeof leg.line === "object"
+						? {
+								name: leg.line.name,
+								product: leg.line.product || leg.line.productName,
+							}
+						: undefined;
 
 				map.set(s.stop.id, {
-					station: { id: s.stop.id, name: s.stop.name || '' },
-					arrival: typeof s.arrival === 'string' ? s.arrival : '',
-					departure: typeof s.departure === 'string' ? s.departure : '',
+					station: { id: s.stop.id, name: s.stop.name || "" },
+					arrival: typeof s.arrival === "string" ? s.arrival : "",
+					departure: typeof s.departure === "string" ? s.departure : "",
 					trainLine,
 					loadFactor: s.loadFactor,
 					legIndex,
@@ -204,20 +215,20 @@ async function analyzeSplitPoints(
 	{
 		onProgress,
 		batchSize = DEFAULT_BATCH_SIZE,
-	}: { onProgress?: unknown; batchSize?: number } = {}
+	}: { onProgress?: unknown; batchSize?: number } = {},
 ) {
 	const splitOptions = [];
 	const streaming = typeof onProgress === "function";
 	if (VERBOSE)
 		console.log(
-			`\n🔍 Analyse von ${splitPoints.length} Split-Stationen gestartet (streaming=${streaming})`
+			`\n🔍 Analyse von ${splitPoints.length} Split-Stationen gestartet (streaming=${streaming})`,
 		);
 
 	const processBatch = async (points: SplitPoint[]) => {
 		const results = await Promise.allSettled(
 			points.map((sp) =>
-				analyzeSingleSplit(originalJourney, sp, queryOptions, originalPrice)
-			)
+				analyzeSingleSplit(originalJourney, sp, queryOptions, originalPrice),
+			),
 		);
 		results.forEach((res, idx) => {
 			const sp = points[idx];
@@ -229,7 +240,7 @@ async function analyzeSplitPoints(
 				splitOptions.push(res.value);
 				if (VERBOSE)
 					console.log(
-						`✅ ${sp.station?.name}: €${res.value.totalPrice} (saves €${res.value.savings})`
+						`✅ ${sp.station?.name}: €${res.value.totalPrice} (saves €${res.value.savings})`,
 					);
 			} else if (res.status === "rejected" && VERBOSE) {
 				console.log(`❌ ${sp.station?.name}:`, res.reason?.message || "error");
@@ -251,7 +262,7 @@ async function analyzeSplitPoints(
 					originalJourney,
 					sp,
 					queryOptions,
-					originalPrice
+					originalPrice,
 				);
 				if (
 					option &&
@@ -288,7 +299,7 @@ async function analyzeSingleSplit(
 	originalJourney: VendoJourney,
 	splitPoint: SplitPoint,
 	queryOptions: QueryOptions,
-	originalPrice: number
+	originalPrice: number,
 ) {
 	const origin = originalJourney.legs[0].origin;
 	const destination =
@@ -300,11 +311,11 @@ async function analyzeSingleSplit(
 		// Increment API counters for both segments
 		incrementApiCount(
 			"SPLIT_SEARCH_SEGMENT_1",
-			`${origin?.name} → ${splitPoint.station?.name}`
+			`${origin?.name} → ${splitPoint.station?.name}`,
 		);
 		incrementApiCount(
 			"SPLIT_SEARCH_SEGMENT_2",
-			`${splitPoint.station?.name} → ${destination?.name}`
+			`${splitPoint.station?.name} → ${destination?.name}`,
 		);
 
 		// Schema validation at entry point ensures origin/destination IDs exist
@@ -338,7 +349,7 @@ async function analyzeSingleSplit(
 
 		const firstJourney = findMatchingJourney(
 			firstSegment.journeys,
-			originalDeparture
+			originalDeparture,
 		);
 
 		if (!firstJourney) {
@@ -347,7 +358,7 @@ async function analyzeSingleSplit(
 
 		const secondJourney = findMatchingJourney(
 			secondSegment.journeys,
-			splitDeparture
+			splitDeparture,
 		);
 
 		if (!secondJourney) {
@@ -366,7 +377,7 @@ async function analyzeSingleSplit(
 				[firstJourney, secondJourney],
 				totalPrice,
 				originalPrice,
-				splitPoint.trainLine
+				splitPoint.trainLine,
 			);
 		}
 
@@ -375,7 +386,7 @@ async function analyzeSingleSplit(
 		const typedError = error as { message: string };
 		console.log(
 			`Single split analysis error at ${splitPoint.station.name}:`,
-			typedError.message
+			typedError.message,
 		);
 		throw error; // Re-throw to be handled by Promise.allSettled
 	}
@@ -387,7 +398,7 @@ function createSplitResult(
 	segments: VendoJourney[],
 	totalPrice: number,
 	originalPrice: number,
-	trainLine?: TrainLine
+	trainLine?: TrainLine,
 ) {
 	const savings = originalPrice - totalPrice;
 
@@ -408,7 +419,7 @@ function createSplitResult(
 
 function findMatchingJourney(
 	journeys: readonly VendoJourney[],
-	targetDeparture: Date
+	targetDeparture: Date,
 ) {
 	if (!journeys?.length) return null;
 	const expected = targetDeparture.getTime();
@@ -416,7 +427,7 @@ function findMatchingJourney(
 		journeys.find(
 			(j) =>
 				Math.abs(new Date(j.legs[0].departure).getTime() - expected) <=
-				TIME_TOLERANCE_MS
+				TIME_TOLERANCE_MS,
 		) || null
 	);
 }
@@ -428,7 +439,7 @@ function handleStreamingResponse(
 	bahnCard: string,
 	hasDeutschlandTicket: boolean,
 	passengerAge: string,
-	travelClass: string
+	travelClass: string,
 ) {
 	const encoder = new TextEncoder();
 
@@ -453,7 +464,7 @@ function handleStreamingResponse(
 					message: "Analyse gestartet...",
 				};
 				controller.enqueue(
-					encoder.encode(`data: ${JSON.stringify(initialData)}\n\n`)
+					encoder.encode(`data: ${JSON.stringify(initialData)}\n\n`),
 				);
 
 				// Find split options with progress updates
@@ -472,12 +483,12 @@ function handleStreamingResponse(
 										total: progress.total,
 										message: progress.message,
 										currentStation: progress.currentStation,
-									})}\n\n`
-								)
+									})}\n\n`,
+								),
 							);
 						},
 						batchSize: 1,
-					}
+					},
 				);
 
 				// Send final result
@@ -488,7 +499,7 @@ function handleStreamingResponse(
 					originalPrice,
 				};
 				controller.enqueue(
-					encoder.encode(`data: ${JSON.stringify(finalData)}\n\n`)
+					encoder.encode(`data: ${JSON.stringify(finalData)}\n\n`),
 				);
 			} catch (error) {
 				const typedError = error as { message?: string };
@@ -498,7 +509,7 @@ function handleStreamingResponse(
 					error: typedError.message || "Failed to analyze split journeys",
 				};
 				controller.enqueue(
-					encoder.encode(`data: ${JSON.stringify(errorData)}\n\n`)
+					encoder.encode(`data: ${JSON.stringify(errorData)}\n\n`),
 				);
 			} finally {
 				controller.close();

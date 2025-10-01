@@ -3,7 +3,7 @@
 :root {
 	--background: #ffffff;
 	--foreground: #171717;
-	--primary: #4B6058;
+	--primary: #4b6058;
 	color-scheme: light dark;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -30,6 +30,6 @@ body {
 	:root {
 		--background: #171717;
 		--foreground: #ffffff;
-		--primary: #4B6058;
+		--primary: #4b6058;
 	}
 }

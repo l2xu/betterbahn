@@ -26,7 +26,7 @@ export const calculateSplitOptionPricing = ({
 			segmentsWithoutPricing: [] as number[],
 			adjustedTotalPrice: splitOption?.totalPrice || 0,
 			adjustedSavings: splitOption?.savings || 0,
-			hasFlixTrains: null
+			hasFlixTrains: null,
 		};
 	}
 
@@ -59,7 +59,7 @@ export const calculateSplitOptionPricing = ({
 	allSegmentsCovered = splitOption.segments.every((segment) => {
 		const trainLegs = getJourneyLegsWithTransfers(segment);
 		return trainLegs.every((leg) =>
-			isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket)
+			isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket),
 		);
 	});
 
@@ -73,7 +73,7 @@ export const calculateSplitOptionPricing = ({
 		splitOption.segments.forEach((segment, index) => {
 			const hasPrice = segment.price && segment.price.amount != null;
 			const segmentHasFlixTrain = getJourneyLegsWithTransfers(segment).some(
-				(leg) => legIsFlixTrain(leg)
+				(leg) => legIsFlixTrain(leg),
 			);
 
 			// Consider a segment as having no pricing if:
@@ -104,7 +104,7 @@ export const calculateSplitOptionPricing = ({
 			for (const segment of splitOption.segments) {
 				const trainLegs = getJourneyLegsWithTransfers(segment);
 				const segmentCovered = trainLegs.every((leg) =>
-					isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket)
+					isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket),
 				);
 				const segmentPrice = segment.price?.amount || 0;
 

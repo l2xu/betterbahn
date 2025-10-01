@@ -27,7 +27,7 @@ export function OriginalJourneyCard({
 		hasDeutschlandTicket &&
 		trainLegs.length > 0 &&
 		trainLegs.every((leg) =>
-			isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket)
+			isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket),
 		);
 
 	const formattedPrice = formatPriceWithTwoDecimals(selectedJourney.price);
@@ -87,8 +87,8 @@ export function OriginalJourneyCard({
 									{selectedJourney.legs?.[selectedJourney.legs.length - 1]
 										? formatTime(
 												selectedJourney.legs[selectedJourney.legs.length - 1]
-													.arrival
-										  )
+													.arrival,
+											)
 										: ""}
 								</span>
 								<span className="ml-3 text-lg ">{extractedData.toStation}</span>

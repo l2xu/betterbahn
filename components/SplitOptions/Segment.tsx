@@ -18,17 +18,17 @@ export const Segment = ({
 	segmentsWithoutPricing,
 	hasDeutschlandTicket,
 	bahnCard,
-	travelClass
+	travelClass,
 }: {
 	segment: VendoJourney;
 	index: number;
 	segmentsWithoutPricing: number[];
 	hasDeutschlandTicket: boolean;
 	bahnCard: string | null;
-	travelClass: string
+	travelClass: string;
 }) => {
 	const segmentHasFlixTrain = getJourneyLegsWithTransfers(segment).some((leg) =>
-		legIsFlixTrain(leg)
+		legIsFlixTrain(leg),
 	);
 	const hasUnknownPrice = segmentsWithoutPricing?.includes(index);
 
@@ -36,7 +36,7 @@ export const Segment = ({
 	const segmentCoveredByDeutschlandTicket =
 		hasDeutschlandTicket &&
 		getJourneyLegsWithTransfers(segment).every((leg) =>
-			isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket)
+			isLegCoveredByDeutschlandTicket(leg, hasDeutschlandTicket),
 		);
 
 	return (
@@ -67,8 +67,9 @@ export const Segment = ({
 						</span>
 					) : hasUnknownPrice ? (
 						<span
-							className={`text-xs font-medium ${segmentHasFlixTrain ? "text-purple-600" : "text-orange-600"
-								}`}
+							className={`text-xs font-medium ${
+								segmentHasFlixTrain ? "text-purple-600" : "text-orange-600"
+							}`}
 						>
 							{segmentHasFlixTrain ? "FlixTrain" : "Preis unbekannt"}
 						</span>
@@ -84,7 +85,12 @@ export const Segment = ({
 					onClick={(e) => {
 						e.stopPropagation();
 
-						const dbUrl = createSegmentSearchUrl(segment, Number(travelClass), hasDeutschlandTicket, bahnCard);
+						const dbUrl = createSegmentSearchUrl(
+							segment,
+							Number(travelClass),
+							hasDeutschlandTicket,
+							bahnCard,
+						);
 
 						if (dbUrl && !dbUrl.startsWith("Error:")) {
 							window.open(dbUrl, "_blank");

@@ -89,7 +89,7 @@ function Discount() {
 				// Search for journeys
 				setLoadingMessage(LOADING_MESSAGES.searching);
 				const foundJourneys = (await searchForJourneys(
-					journeyData
+					journeyData,
 				)) as VendoJourney[];
 
 				if (foundJourneys.length === 1) {

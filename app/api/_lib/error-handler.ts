@@ -3,10 +3,10 @@ function safeStringifyError(error: unknown): string {
 		return JSON.stringify({
 			name: error.name,
 			message: error.message,
-			stack: error.stack
+			stack: error.stack,
 		});
 	}
-	
+
 	try {
 		return JSON.stringify(error);
 	} catch {
@@ -14,14 +14,19 @@ function safeStringifyError(error: unknown): string {
 	}
 }
 
-export const apiErrorHandler = async (routeHandler: () => Promise<Response>) => {
+export const apiErrorHandler = async (
+	routeHandler: () => Promise<Response>,
+) => {
 	try {
 		return await routeHandler();
 	} catch (error) {
-		console.error('API Error:', safeStringifyError(error));
-		
-		return Response.json({
-			error: safeStringifyError(error),
-		}, { status: 500 });
+		console.error("API Error:", safeStringifyError(error));
+
+		return Response.json(
+			{
+				error: safeStringifyError(error),
+			},
+			{ status: 500 },
+		);
 	}
 };

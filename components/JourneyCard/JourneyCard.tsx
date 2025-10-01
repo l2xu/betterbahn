@@ -23,9 +23,10 @@ export const JourneyCard = ({
 	const transferCountWithoutWalking = Math.max(0, nonWalkingLegs.length - 1);
 	const transferStationsWithoutWalking = getTransferStations(nonWalkingLegs);
 
-	const priceDisplay = journey.price?.amount === undefined
-		? "Preis auf Anfrage"
-		: formatPriceDE(journey.price.amount);
+	const priceDisplay =
+		journey.price?.amount === undefined
+			? "Preis auf Anfrage"
+			: formatPriceDE(journey.price.amount);
 
 	return (
 		<div
@@ -53,7 +54,9 @@ export const JourneyCard = ({
 					<div className="text-sm text-foreground/60">
 						<JourneyDuration journey={journey} />
 					</div>
-					<div className="text-lg font-bold text-foreground">{priceDisplay}</div>
+					<div className="text-lg font-bold text-foreground">
+						{priceDisplay}
+					</div>
 				</div>
 			</div>
 
