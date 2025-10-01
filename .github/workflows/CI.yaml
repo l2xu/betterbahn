@@ -15,4 +15,6 @@ jobs:
         run: pnpm tsc
       - name: Run Oxlint
         run: pnpm run oxlint
+      - name: Run Prettier
+        run: pnpm run format
       - run: pnpm run build
