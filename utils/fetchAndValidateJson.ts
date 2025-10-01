@@ -52,7 +52,7 @@ export const fetchAndValidateJson = async <
 	try {
 		data = validateJson(schema, json);
 	} catch (error) {
-		throw new Error(`Validation of fetch ${url} failed: ${error}`);
+		throw new Error(`Validation of fetch ${url} failed.`, { cause: error });
 	}
 
 	return {
