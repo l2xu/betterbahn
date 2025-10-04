@@ -70,19 +70,19 @@ const updateLocalStorage = (updates: Updates) => {
 	if (updates.bahnCard !== undefined) {
 		localStorage.setItem("betterbahn/settings/bahnCard", updates.bahnCard);
 	}
-	if (updates.hasDeutschlandTicket !== null) {
+	if (updates.hasDeutschlandTicket !== undefined) {
 		localStorage.setItem(
 			"betterbahn/settings/hasDeutschlandTicket",
 			String(updates.hasDeutschlandTicket)
 		);
 	}
-	if (updates.passengerAge !== null) {
+	if (updates.passengerAge !== undefined) {
 		localStorage.setItem(
 			"betterbahn/settings/passengerAge",
-			String(updates.passengerAge || '')
+			String(updates.passengerAge || "")
 		);
 	}
-	if(updates.travelClass !== undefined) {
+	if (updates.travelClass !== undefined) {
 		localStorage.setItem(
 			"betterbahn/settings/travelClass",
 			updates.travelClass
